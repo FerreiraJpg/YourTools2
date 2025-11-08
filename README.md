@@ -12,4 +12,12 @@ Edric Leoni Savio RA: 1072310470
 Pedro Schreiner Ferreira RA: 1072310948
 Iago Alexandre marcaccini panho RA: 1072312987
 Pedro Inacio Pinheiro Alcantra Dias RA: 10725215730
+
 Clara Emidio Corrêa RA: 10722129245
+
+
+
+
+
+
+Para utilizar o app, é preciso baixar o mysql workbench e criar um banco de dados local, para ai sim sincronizar e fazer o app funcionar
