@@ -3,10 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/kauan/Documents/NetBeansProjects/Prototipo/src/View/GerenciaFerramentas.java</file>
-            <file>file:/C:/Users/kauan/Documents/NetBeansProjects/Prototipo/src/Model/Ferramentas.java</file>
-            <file>file:/C:/Users/kauan/Documents/NetBeansProjects/Prototipo/src/DAO/YourToolsDAO.java</file>
-            <file>file:/C:/Users/kauan/Documents/NetBeansProjects/Prototipo/src/View/CadastroFerramentas.java</file>
+            <file>file:/C:/Users/user/YourTools2/Prototipo/src/DAO/YourToolsDAO.java</file>
+            <file>file:/C:/Users/user/YourTools2/Prototipo/src/View/CadastroAmigos.java</file>
+            <file>file:/C:/Users/user/YourTools2/Prototipo/src/View/CadastroFerramentas.java</file>
+            <file>file:/C:/Users/user/YourTools2/Prototipo/src/View/GerenciaAmigos.java</file>
+            <file>file:/C:/Users/user/YourTools2/Prototipo/src/View/GerenciaFerramentas.java</file>
+            <file>file:/C:/Users/user/YourTools2/Prototipo/src/View/TelaInicial.java</file>
+            <file>file:/C:/Users/user/YourTools2/Prototipo/src/View/TelaPrincipal.java</file>
+            <file>file:/C:/Users/user/YourTools2/Prototipo/src/Model/Ferramentas.java</file>
         </group>
     </open-files>
 </project-private>

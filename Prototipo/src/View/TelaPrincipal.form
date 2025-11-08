@@ -73,16 +73,10 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="btn_cadastraFerramentas" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="btn_gerenciaFerramentas" min="-2" pref="159" max="-2" attributes="0"/>
-                      <EmptySpace pref="228" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="btn_cadastraFerramentas" min="-2" max="-2" attributes="0"/>
+                  <Component id="btn_gerenciaFerramentas" min="-2" pref="175" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace pref="212" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btn_gerenciaAmigos" min="-2" pref="159" max="-2" attributes="0"/>
                   <Component id="btn_cadastraAmigos" min="-2" pref="159" max="-2" attributes="0"/>
