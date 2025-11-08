@@ -1,0 +1,17 @@
+name: Qodana
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  qodana:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Rodar Qodana
+        uses: JetBrains/qodana-action@v2024.2
