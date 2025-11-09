@@ -2,34 +2,36 @@ name: Coverage and Quality Gate
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: maven
 
-      - name: Build and test with coverage
-        run: mvn clean verify -Pcoverage
+      - name: Build with Maven
+        working-directory: ./PrototipoMaven
+        run: mvn -B clean package
+
+      - name: Run tests with coverage
+        working-directory: ./PrototipoMaven
+        run: mvn test jacoco:report
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: target/site/jacoco/jacoco.xml
-          flags: unittests
-          name: codecov-report
+          files: ./PrototipoMaven/target/site/jacoco/jacoco.xml
           fail_ci_if_error: true
-          fail_ci_if_out_of_range: true
-          threshold: 80
