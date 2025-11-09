@@ -1,7 +1,7 @@
-package Model;
+package main.Model;
 
 import java.util.*;
-import DAO.YourToolsDAO;
+import main.DAO.YourToolsDAO;
 import java.sql.SQLException;
 
 public class Amigos extends Pessoa {

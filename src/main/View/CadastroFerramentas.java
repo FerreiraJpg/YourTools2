@@ -2,28 +2,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package View;
+package main.View;
 
-import Model.Amigos;
+import main.Model.Ferramentas;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author kauan
  */
-public class CadastroAmigos extends javax.swing.JFrame {
+public class CadastroFerramentas extends javax.swing.JFrame {
 
-    private Amigos objAmigo;
-    
+    private Ferramentas objFerramentas;
     /**
-     * Creates new form CadastroAmigos
+     * Creates new form CadastroFerramentas
      */
-    public CadastroAmigos() {
+    public CadastroFerramentas() {
         initComponents();
-        this.objAmigo = new Amigos();
+        this.objFerramentas = new Ferramentas();
     }
 
     /**
@@ -36,18 +34,20 @@ public class CadastroAmigos extends javax.swing.JFrame {
     private void initComponents() {
 
         c_nome = new javax.swing.JTextField();
-        c_telefone = new javax.swing.JTextField();
-        btn_cadastrar = new javax.swing.JToggleButton();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        c_marca = new javax.swing.JTextField();
+        c_cAquisicao = new javax.swing.JTextField();
+        btn_cadastrar = new javax.swing.JButton();
+        btn_cancelar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        c_nome.addActionListener(new java.awt.event.ActionListener() {
+        c_cAquisicao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c_nomeActionPerformed(evt);
+                c_cAquisicaoActionPerformed(evt);
             }
         });
 
@@ -58,103 +58,115 @@ public class CadastroAmigos extends javax.swing.JFrame {
             }
         });
 
-        jToggleButton1.setText("Cancelar");
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_cancelar.setText("Cancelar");
+        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+                btn_cancelarActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Cadastro de amigos");
+        jLabel1.setText("Cadastro de ferramentas");
 
-        jLabel2.setText("Nome:");
+        jLabel2.setText("Nome da ferramenta:");
 
-        jLabel3.setText("Número de celular:");
+        jLabel3.setText("Marca:");
+
+        jLabel4.setText("Custo:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addComponent(btn_cadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
-                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
+                .addGap(52, 52, 52)
+                .addComponent(btn_cadastrar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_cancelar)
+                .addGap(47, 47, 47))
             .addGroup(layout.createSequentialGroup()
-                .addGap(141, 141, 141)
+                .addGap(132, 132, 132)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(139, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(c_nome, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
-                        .addComponent(c_telefone)))
-                .addGap(88, 88, 88))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(c_marca, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                        .addComponent(c_nome)
+                        .addComponent(c_cAquisicao)))
+                .addGap(102, 102, 102))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(15, 15, 15)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(c_nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c_telefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
+                .addComponent(c_marca, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(c_cAquisicao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_cadastrar)
-                    .addComponent(jToggleButton1))
-                .addGap(46, 46, 46))
+                    .addComponent(btn_cancelar))
+                .addGap(36, 36, 36))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void c_nomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c_nomeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_c_nomeActionPerformed
-
     private void btn_cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cadastrarActionPerformed
         try {
             // recebendo e validando dados da interface gr�fica.
             String nome = "";
-            int telefone = 0;
+            String marca = "";
+            double custoAquisicao = 0;
 
             if (this.c_nome.getText().length() < 2) {
                 throw new Mensagens("Nome deve conter ao menos 2 caracteres.");
             } else {
                 nome = this.c_nome.getText();
             }
-
-            if (this.c_telefone.getText().length() < 8) {
-                throw new Mensagens("O numero de telefone deve ter ao menos 8 numeros");
+            
+            if (this.c_marca.getText().length() < 2) {
+                throw new Mensagens("A marca deve conter ao menos 2 caracteres.");
             } else {
-                telefone = Integer.parseInt(this.c_telefone.getText());
+                marca = this.c_marca.getText();
+            }
+
+            if (this.c_cAquisicao.getText().length() < 0) {
+                throw new Mensagens("O custo deve ser maior que 0");
+            } else {
+                custoAquisicao = Double.parseDouble(this.c_cAquisicao.getText());
             }
             
 
             // envia os dados para o Controlador cadastrar
-            if (this.objAmigo.InsertAmigosBD(nome, telefone)) {
-                JOptionPane.showMessageDialog(rootPane, "Amigo Cadastrado com Sucesso!");
+            if (this.objFerramentas.InsertFerramentasBD(nome, marca, custoAquisicao)) {
+                JOptionPane.showMessageDialog(rootPane, "Ferramenta Cadastrado com Sucesso!");
 
                 // limpa campos da interface
                 this.c_nome.setText("");
-                this.c_telefone.setText("");
+                this.c_marca.setText("");
+                this.c_cAquisicao.setText("");
                 
-                GerenciaAmigos objeto = new GerenciaAmigos();
-                objeto.carregaTabelaAmigos();
+                GerenciaFerramentas objeto = new GerenciaFerramentas();
+                objeto.carregaTabelaFerramentas();
 
             }
 
-            System.out.println(this.objAmigo.getMinhaListaAmigos().toString());
+            System.out.println(this.objFerramentas.getMinhaListaFerramentas().toString());
 
         } catch (Mensagens erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
@@ -163,12 +175,15 @@ public class CadastroAmigos extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(CadastroAmigos.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_btn_cadastrarActionPerformed
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+    private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
         this.setVisible(false);
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
+    }//GEN-LAST:event_btn_cancelarActionPerformed
+
+    private void c_cAquisicaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c_cAquisicaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_c_cAquisicaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -187,31 +202,33 @@ public class CadastroAmigos extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroAmigos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroFerramentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroAmigos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroFerramentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroAmigos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroFerramentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroAmigos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastroFerramentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CadastroAmigos().setVisible(true);
+                new CadastroFerramentas().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton btn_cadastrar;
+    private javax.swing.JButton btn_cadastrar;
+    private javax.swing.JButton btn_cancelar;
+    private javax.swing.JTextField c_cAquisicao;
+    private javax.swing.JTextField c_marca;
     private javax.swing.JTextField c_nome;
-    private javax.swing.JTextField c_telefone;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JLabel jLabel4;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,4 +1,4 @@
-package View;
+package main.View;
 
 public class Mensagens extends Exception {
 
