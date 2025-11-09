@@ -1,0 +1,17 @@
+name: Qodana
+on: [pull_request, push]
+
+jobs:
+  qodana:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Qodana Scan
+        uses: JetBrains/qodana-action@v2024.2.5
+        with:
+          args: --apply-fixes
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
