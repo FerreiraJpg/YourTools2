@@ -67,3 +67,5 @@ Thumbs.db
 *.tmp
 *.bak
 *.swp
+
+/PrototipoMaven/target/
