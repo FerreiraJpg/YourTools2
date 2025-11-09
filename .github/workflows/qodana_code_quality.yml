@@ -1,19 +1,9 @@
 name: Qodana
-on:
-  workflow_dispatch:
-  pull_request:
-  push:
-    branches:
-      - main
-      - 'releases/**'
+on: [pull_request, push]
 
 jobs:
   qodana:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      checks: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,6 +12,6 @@ jobs:
       - name: Qodana Scan
         uses: JetBrains/qodana-action@v2024.2.5
         with:
-          pr-mode: true
+          args: --apply-fixes
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
