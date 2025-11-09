@@ -1,7 +1,5 @@
 name: Build, Test and Upload Coverage
 
-name: Coverage and Quality Gate
-
 on:
   push:
     branches: [ "main" ]
@@ -37,4 +35,3 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: PrototipoMaven/target/site/jacoco/jacoco.xml
           fail_ci_if_error: true
-
