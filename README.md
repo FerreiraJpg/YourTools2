@@ -13,7 +13,7 @@ Grupo de Gestão e Qualidade de Software:
 Edric Leoni Savio RA: 1072310470
 Pedro Schreiner Ferreira RA: 1072310948
 Iago Alexandre marcaccini panho RA: 1072312987
-Pedro Inacio Pinheiro Alcantra Dias RA: 10725215730
+Pedro Inacio Pinheiro Alcantra Dias RA: 10725215730 (https://github.com/opedroalcantara).
 Clara Emidio Corrêa RA: 10722129245
 
 
@@ -42,5 +42,6 @@ CREATE TABLE tb_ferramentas (
 );
 
 Essa a base do banco que você precisa copiar no MySQL
+
 
 
