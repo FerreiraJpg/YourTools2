@@ -1,4 +1,6 @@
 # YourTools
+[![Qodana](https://github.com/FerreiraJpg/YourTools2/actions/workflows/code_quality.yml/badge.svg)](https://github.com/FerreiraJpg/YourTools2/actions/workflows/code_quality.yml)'
+
 Trabalho do primeiro semestre da faculdade.
 Grupo do projeto original:
 Edric Leoni Savio RA: 1072310470
@@ -40,4 +42,5 @@ CREATE TABLE tb_ferramentas (
 );
 
 Essa a base do banco que você precisa copiar no MySQL
+
 
