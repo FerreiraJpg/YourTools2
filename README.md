@@ -2,20 +2,27 @@
 [![Qodana](https://github.com/FerreiraJpg/YourTools2/actions/workflows/code_quality.yml/badge.svg)](https://github.com/FerreiraJpg/YourTools2/actions/workflows/code_quality.yml)'
 
 Trabalho do primeiro semestre da faculdade.
-### Grupo do projeto original:
-- [Edric Leoni Savio](https://github.com/edricls) — RA: 1072310470
-- [Pedro Schreiner Ferreira](https://github.com/FerreiraJpg) — RA: 1072310948
-- [Iago Alexandre Marcaccini Panho](https://github.com/Iag18) — RA: 1072312987
-- Kauan Correia RA: 1072314544
-- João Bernardo Varela de Amorim RA: 10723114376
+### 🧩 Grupo do Projeto Original
 
-### Grupo de Gestão e Qualidade de Software
+| Integrante | RA | GitHub |
+|-------------|------|--------|
+| Edric Leoni Savio | 1072310470 | [@edricls](https://github.com/edricls) |
+| Pedro Schreiner Ferreira | 1072310948 | [@FerreiraJpg](https://github.com/FerreiraJpg) |
+| Iago Alexandre Marcaccini Panho | 1072312987 | [@Iag18](https://github.com/Iag18) |
+| Kauan Correia | 1072314544 | — |
+| João Bernardo Varela de Amorim | 10723114376 | — |
 
-- [Edric Leoni Savio](https://github.com/edricls) — RA: 1072310470
-- [Pedro Schreiner Ferreira](https://github.com/FerreiraJpg) — RA: 1072310948
-- [Iago Alexandre Marcaccini Panho](https://github.com/Iag18) — RA: 1072312987
-- [Pedro Inacio Pinheiro Alcantara Dias](https://github.com/opedroalcantara) — RA: 10725215730
-- [Clara Emidio Corrêa](https://github.com/ClaraCorrea) — RA: 10722129245
+---
+
+### 🧠 Grupo de Gestão e Qualidade de Software
+
+| Integrante | RA | GitHub |
+|-------------|------|--------|
+| Edric Leoni Savio | 1072310470 | [@edricls](https://github.com/edricls) |
+| Pedro Schreiner Ferreira | 1072310948 | [@FerreiraJpg](https://github.com/FerreiraJpg) |
+| Iago Alexandre Marcaccini Panho | 1072312987 | [@Iag18](https://github.com/Iag18) |
+| Pedro Inacio Pinheiro Alcantara Dias | 10725215730 | [@opedroalcantara](https://github.com/opedroalcantara) |
+| Clara Emidio Corrêa | 10722129245 | [@ClaraCorrea](https://github.com/ClaraCorrea) |
 
 
 Para utilizar o app, é preciso baixar o mysql workbench e criar um banco de dados local, para ai sim sincronizar e fazer o app funcionar.
