@@ -22,16 +22,14 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        working-directory: ./PrototipoMaven
         run: mvn -B clean package
 
       - name: Run tests with coverage
-        working-directory: ./PrototipoMaven
         run: mvn test jacoco:report
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./PrototipoMaven/target/site/jacoco/jacoco.xml
+          files: ./target/site/jacoco/jacoco.xml
           fail_ci_if_error: true

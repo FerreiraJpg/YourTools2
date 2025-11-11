@@ -1,6 +1,10 @@
 # YourTools
 [![Qodana](https://github.com/FerreiraJpg/YourTools2/actions/workflows/code_quality.yml/badge.svg)](https://github.com/FerreiraJpg/YourTools2/actions/workflows/code_quality.yml)'
 
+[//]: # ([![Quality Gate Status]&#40;https://sonarcloud.io/api/project_badges/measure?project=FerreiraJpg_YourTools2&metric=alert_status&#41;]&#40;https://sonarcloud.io/summary/new_code?id=FerreiraJpg_YourTools2&#41;)
+
+[//]: # ([![Coverage]&#40;https://sonarcloud.io/api/project_badges/measure?project=FerreiraJpg_YourTools2&metric=coverage&#41;]&#40;https://sonarcloud.io/summary/new_code?id=FerreiraJpg_YourTools2&#41;)
+
 Trabalho do primeiro semestre da faculdade.
 ### 🧩 Grupo do Projeto Original
 
