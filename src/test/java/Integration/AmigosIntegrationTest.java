@@ -2,6 +2,7 @@ package Integration;
 
 import DAO.YourToolsDAO;
 import Model.Amigos;
+import java.sql.SQLException;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,25 +11,30 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AmigosIntegrationTest {
 
     static YourToolsDAO dao;
+    Amigos amigoValido;
+    Amigos amigoInvalido;
 
     @BeforeAll
-    static void setup() {
+    static void setupDAO() {
         dao = new YourToolsDAO();
+    }
+
+    @BeforeEach
+    void setupDados() throws SQLException {
+        amigoValido = new Amigos(dao.maiorIDAmigos() + 1, "Teste Integracao", 123456789);
+        amigoInvalido = new Amigos(dao.maiorIDAmigos() + 1, null, 999999999);
     }
 
     @Test
     @Order(1)
     void testInsertAmigo() {
-        Amigos amigo = new Amigos(999, "Teste Integracao", 123456789);
-        boolean inserido = dao.InsertAmigosBD(amigo);
+        boolean inserido = dao.InsertAmigosBD(amigoValido);
         assertTrue(inserido, "O amigo deve ser inserido com sucesso");
     }
 
     @Test
     @Order(2)
     void testInsertAmigoIncorreto() {
-        Amigos amigoInvalido = new Amigos(1000, null, 999999999);
-
         try {
             boolean inserido = dao.InsertAmigosBD(amigoInvalido);
             assertFalse(inserido, "O método não deveria retornar true em uma inserção inválida");
@@ -41,8 +47,8 @@ public class AmigosIntegrationTest {
     
     @AfterEach
     void limparBanco() {
-        dao.DeleteAmigosBD(999);
-        dao.DeleteAmigosBD(1000);
+        dao.DeleteAmigosBD(amigoValido.getId());
+        dao.DeleteAmigosBD(amigoInvalido.getId());
     }
 
 }
