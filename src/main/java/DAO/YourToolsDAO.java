@@ -40,7 +40,7 @@ public class YourToolsDAO {
 
         String url = "jdbc:mysql://localhost:3306/db_yourtools?useSSL=false&serverTimezone=UTC";
         String user = "root";
-        String password = "10edric10";
+        String password = "Pe1910702403";
 
         Connection connection = DriverManager.getConnection(url, user, password);
         System.out.println("Conectado com sucesso!");
@@ -153,24 +153,25 @@ public class YourToolsDAO {
 
     public Amigos carregaAmigos(int id) {
         
-        Amigos objeto = new Amigos();
-        objeto.setId(id);
-        
         try {
             Statement stmt = this.getConexao().createStatement();
             ResultSet res = stmt.executeQuery("SELECT * FROM tb_amigos WHERE id = " + id);
-            res.next();
-
-            objeto.setNome(res.getString("nome"));
-            objeto.setTelefone(res.getInt("telefone"));
-           
-            
-
-            stmt.close();            
+            if (res.next()) {
+                Amigos objeto = new Amigos();
+                objeto.setId(id);
+                objeto.setNome(res.getString("nome"));
+                objeto.setTelefone(res.getInt("telefone"));
+                stmt.close();
+                return objeto;
+            } else {
+                stmt.close();
+                return null; // Return null if no amigo is found
+            }
             
         } catch (SQLException erro) {
+            System.err.println("Erro ao carregar amigo: " + erro.getMessage());
+            return null;
         }
-        return objeto;
     }
     
     

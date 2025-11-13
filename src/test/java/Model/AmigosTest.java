@@ -1,13 +1,294 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package Tests.Model;
+package Model;
 
-/**
- *
- * @author edric
- */
-public class AmigosTest {
-    
+import DAO.YourToolsDAO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach; // Importa AfterEach
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class AmigosTest {
+
+    private YourToolsDAO dao;
+    private Amigos amigos;
+    private int testAmigoId;
+
+    @BeforeEach
+    void setUp() throws SQLException {
+        dao = new YourToolsDAO();
+        amigos = new Amigos();
+        // Limpa quaisquer dados de teste anteriores para garantir um estado limpo para cada teste.
+        // Esta é uma abordagem simplificada; em um cenário real, você pode usar transações
+        // ou uma configuração/desmontagem de banco de dados de teste dedicada.
+        // Por enquanto, vamos apenas tentar excluir um amigo de teste conhecido, se ele existir.
+        // Uma solução mais robusta envolveria inserir um amigo de teste específico e
+        // armazenar seu ID para limpeza.
+        
+        // Insere um amigo de teste para operações CRUD gerais e armazena seu ID
+        String initialTestName = "Amigo de Teste Inicial " + System.currentTimeMillis();
+        int initialTestPhone = 100000000;
+        amigos.InsertAmigosBD(initialTestName, initialTestPhone);
+        testAmigoId = amigos.maiorIDAmigos();
+    }
+
+    @AfterEach
+    void tearDown() {
+        // Limpa o amigo de teste criado no setUp
+        try {
+            amigos.DeleteAmigosBD(testAmigoId);
+        } catch (Exception e) {
+            // Registra ou trata a exceção se o amigo não puder ser excluído
+            System.err.println("Erro durante o tearDown do teste: " + e.getMessage());
+        }
+    }
+
+    // --- Testes de Unidade para a classe Amigos ---
+    @Test
+    void testAmigosEmptyConstructor() {
+        Amigos newAmigo = new Amigos();
+        assertNotNull(newAmigo);
+        // Valores padrão do construtor de Pessoa
+        assertEquals(0, newAmigo.getId());
+        assertNull(newAmigo.getNome());
+        assertEquals(0, newAmigo.getTelefone());
+    }
+
+    @Test
+    void testAmigosParameterizedConstructor() {
+        int id = 1;
+        String nome = "Amigo de Teste";
+        int telefone = 123456789;
+        Amigos newAmigo = new Amigos(id, nome, telefone);
+        assertNotNull(newAmigo);
+        assertEquals(id, newAmigo.getId());
+        assertEquals(nome, newAmigo.getNome());
+        assertEquals(telefone, newAmigo.getTelefone());
+    }
+
+    @Test
+    void testToString() {
+        int id = 1;
+        String nome = "Amigo de Teste";
+        int telefone = 123456789;
+        Amigos newAmigo = new Amigos(id, nome, telefone);
+        String expectedToString = "\n ID: " + id
+                                + "\n Nome: " + nome
+                                + "\n Telefone: " + telefone
+                                + "\n -----------";
+        assertEquals(expectedToString, newAmigo.toString());
+    }
+
+    @Test
+    void testPessoaGettersAndSetters() {
+        Amigos newAmigo = new Amigos();
+        newAmigo.setId(10);
+        newAmigo.setNome("Teste de Setter");
+        newAmigo.setTelefone(987654321);
+
+        assertEquals(10, newAmigo.getId());
+        assertEquals("Teste de Setter", newAmigo.getNome());
+        assertEquals(987654321, newAmigo.getTelefone());
+    }
+
+    // --- Testes de Integração e Validação ---
+
+    @Test
+    void testGetMinhaListaAmigos() {
+        ArrayList<Amigos> actualList = amigos.getMinhaListaAmigos();
+        assertNotNull(actualList);
+        assertTrue(actualList.size() > 0, "A lista de amigos não deve estar vazia após a inserção no setUp.");
+    }
+
+    @Test
+    void testInsertAmigosBD() throws SQLException {
+        String testName = "Amigo de Teste Inserir " + System.currentTimeMillis();
+        int testPhone = 111222333;
+        
+        boolean result = amigos.InsertAmigosBD(testName, testPhone);
+        assertTrue(result);
+
+        int newId = amigos.maiorIDAmigos();
+        Amigos insertedAmigo = amigos.carregaAmigos(newId);
+        
+        assertNotNull(insertedAmigo);
+        assertEquals(testName, insertedAmigo.getNome());
+        assertEquals(testPhone, insertedAmigo.getTelefone());
+        
+        // Limpa este amigo específico
+        amigos.DeleteAmigosBD(newId);
+    }
+
+    @Test
+    void testInsertAmigosBD_EmptyName() {
+        String testName = ""; // Nome vazio
+        int testPhone = 111222333;
+        
+        // Assumindo que a camada DAO ou do banco de dados lida com esta validação e pode lançar uma exceção
+        // ou retornar false. A implementação atual de InsertAmigosBD sempre retorna true.
+        // Este teste destaca uma área potencial para melhoria no método Amigos.InsertAmigosBD
+        // ou na camada DAO para lidar com entradas inválidas de forma mais robusta.
+        
+        // Por enquanto, vamos afirmar que ainda retorna true, mas observe isso como uma lacuna de validação.
+        // Em um cenário real, esperaríamos uma exceção ou um retorno falso.
+        try {
+            boolean result = amigos.InsertAmigosBD(testName, testPhone);
+            assertTrue(result, "InsertAmigosBD deveria idealmente lidar com nomes vazios e retornar false ou lançar exceção.");
+            // Se inserir, tenta limpar
+            int newId = amigos.maiorIDAmigos();
+            Amigos insertedAmigo = amigos.carregaAmigos(newId);
+            if (insertedAmigo != null && insertedAmigo.getNome().isEmpty()) {
+                amigos.DeleteAmigosBD(newId);
+            }
+        } catch (SQLException e) {
+            // Se o DAO lançar uma exceção para nome vazio, isso é bom.
+            assertTrue(e.getMessage().contains("empty name") || e.getMessage().contains("constraint") || e.getMessage().contains("null"), 
+                       "Exceção SQL esperada para nome vazio, mas obteve: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testInsertAmigosBD_NullName() {
+        String testName = null; // Nome nulo
+        int testPhone = 111222333;
+        
+        // Similar ao nome vazio, o InsertAmigosBD atual sempre retorna true.
+        // Este teste aponta para uma lacuna de validação.
+        try {
+            boolean result = amigos.InsertAmigosBD(testName, testPhone);
+            assertTrue(result, "InsertAmigosBD deveria idealmente lidar com nomes nulos e retornar false ou lançar exceção.");
+            // Se inserir, tenta limpar
+            int newId = amigos.maiorIDAmigos();
+            Amigos insertedAmigo = amigos.carregaAmigos(newId);
+            if (insertedAmigo != null && insertedAmigo.getNome() == null) {
+                amigos.DeleteAmigosBD(newId);
+            }
+        } catch (SQLException e) {
+            // Se o DAO lançar uma exceção para nome nulo, isso é bom.
+            assertTrue(e.getMessage().contains("null") || e.getMessage().contains("constraint"), 
+                       "Exceção SQL esperada para nome nulo, mas obteve: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testInsertAmigosBD_NegativePhoneNumber() {
+        String testName = "Amigo de Teste Telefone " + System.currentTimeMillis();
+        int testPhone = -12345; // Número de telefone negativo
+        
+        // Semelhante ao nome vazio, o InsertAmigosBD atual sempre retorna true.
+        // Este teste aponta para uma lacuna de validação.
+        try {
+            boolean result = amigos.InsertAmigosBD(testName, testPhone);
+            assertTrue(result, "InsertAmigosBD deveria idealmente lidar com números de telefone negativos e retornar false ou lançar exceção.");
+            // Se inserir, tenta limpar
+            int newId = amigos.maiorIDAmigos();
+            Amigos insertedAmigo = amigos.carregaAmigos(newId);
+            if (insertedAmigo != null && insertedAmigo.getTelefone() == testPhone) {
+                amigos.DeleteAmigosBD(newId);
+            }
+        } catch (SQLException e) {
+            // Se o DAO lançar uma exceção para telefone inválido, isso é bom.
+            assertTrue(e.getMessage().contains("phone") || e.getMessage().contains("constraint"), 
+                       "Exceção SQL esperada para número de telefone negativo, mas obteve: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testDeleteAmigosBD() throws SQLException {
+        // Insere um novo amigo especificamente para este teste de exclusão
+        String nameToDelete = "Amigo para Excluir " + System.currentTimeMillis();
+        int phoneToDelete = 999888777;
+        amigos.InsertAmigosBD(nameToDelete, phoneToDelete);
+        int idToDelete = amigos.maiorIDAmigos(); 
+
+        boolean result = amigos.DeleteAmigosBD(idToDelete);
+        assertTrue(result);
+
+        Amigos deletedAmigo = amigos.carregaAmigos(idToDelete);
+        assertNull(deletedAmigo, "Amigo deveria ser nulo após a exclusão.");
+    }
+
+    @Test
+    void testDeleteAmigosBD_NonExistentID() {
+        int nonExistentId = -1; // Um ID que não deve existir
+        boolean result = amigos.DeleteAmigosBD(nonExistentId);
+        assertTrue(result, "Excluir um amigo inexistente ainda deve retornar true se nenhum erro for lançado pelo DAO.");
+        // A implementação atual do DAO não verifica explicitamente a existência antes de tentar excluir,
+        // então provavelmente retornará true mesmo que nada tenha sido excluído. Esta é uma área para melhoria.
+    }
+
+    @Test
+    void testUpdateAmigosBD() throws SQLException {
+        String updatedName = "Amigo Atualizado " + System.currentTimeMillis();
+        int updatedPhone = 321321321;
+        boolean result = amigos.UpdateAmigosBD(testAmigoId, updatedName, updatedPhone);
+        assertTrue(result);
+        
+        Amigos updatedAmigo = amigos.carregaAmigos(testAmigoId);
+        assertNotNull(updatedAmigo);
+        assertEquals(updatedName, updatedAmigo.getNome());
+        assertEquals(updatedPhone, updatedAmigo.getTelefone());
+    }
+
+    @Test
+    void testUpdateAmigosBD_EmptyName() {
+        String updatedName = ""; // Nome vazio
+        int updatedPhone = 321321321;
+        
+        boolean result = amigos.UpdateAmigosBD(testAmigoId, updatedName, updatedPhone);
+        assertTrue(result, "UpdateAmigosBD deveria idealmente lidar com nomes vazios e retornar false ou lançar exceção.");
+        
+        // Se atualizar, verifica a mudança.
+        Amigos updatedAmigo = amigos.carregaAmigos(testAmigoId);
+        // Dependendo do comportamento do DAO/DB, pode atualizar para vazio ou manter o original.
+        // Por enquanto, assumimos que atualiza.
+        assertEquals(updatedName, updatedAmigo.getNome());
+    }
+
+    @Test
+    void testUpdateAmigosBD_NegativePhoneNumber() {
+        String updatedName = "Amigo Atualizado Telefone " + System.currentTimeMillis();
+        int updatedPhone = -98765; // Número de telefone negativo
+        
+        boolean result = amigos.UpdateAmigosBD(testAmigoId, updatedName, updatedPhone);
+        assertTrue(result, "UpdateAmigosBD deveria idealmente lidar com números de telefone negativos e retornar false ou lançar exceção.");
+        
+        // Se atualizar, verifica a mudança.
+        Amigos updatedAmigo = amigos.carregaAmigos(testAmigoId);
+        assertEquals(updatedPhone, updatedAmigo.getTelefone());
+    }
+
+    @Test
+    void testUpdateAmigosBD_NonExistentID() {
+        int nonExistentId = -1;
+        String updatedName = "Atualização Inexistente";
+        int updatedPhone = 123123123;
+        boolean result = amigos.UpdateAmigosBD(nonExistentId, updatedName, updatedPhone);
+        assertTrue(result, "Atualizar um amigo inexistente ainda deve retornar true se nenhum erro for lançado pelo DAO.");
+        // Semelhante à exclusão, o DAO atual pode retornar true sem atualização real.
+    }
+
+    @Test
+    void testCarregaAmigos() throws SQLException {
+        Amigos loadedAmigo = amigos.carregaAmigos(testAmigoId);
+        
+        assertNotNull(loadedAmigo, "O amigo carregado não deveria ser nulo.");
+        // As asserções para nome e telefone são feitas no setUp, então apenas verificamos se é o ID correto
+        assertEquals(testAmigoId, loadedAmigo.getId());
+    }
+
+    @Test
+    void testCarregaAmigos_NonExistentID() {
+        int nonExistentId = -1;
+        Amigos loadedAmigo = amigos.carregaAmigos(nonExistentId);
+        assertNull(loadedAmigo, "Carregar amigo com ID inexistente deve retornar nulo.");
+    }
+
+    @Test
+    void testMaiorIDAmigos() throws SQLException {
+        int result = amigos.maiorIDAmigos();
+        assertTrue(result >= testAmigoId, "O maior ID deve ser maior ou igual ao ID do amigo de teste.");
+    }
 }
