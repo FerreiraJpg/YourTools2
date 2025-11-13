@@ -73,11 +73,35 @@ public class AmigosIntegrationTest {
             fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
         }
     }
+    
+    @Test
+    @Order(5)
+    void testExcluirAmigo() {
+        int amigoValidoID = amigoValido.getId();
+        boolean deletado = dao.DeleteAmigosBD(amigoValidoID);
+        assertTrue(deletado, "O amigo deve ser excluído com sucesso");
+    }
+    
+    @Test
+    @Order(6)
+    void testExcluirAmigoNull() throws SQLException {
+        int idInvalido = dao.maiorIDAmigos() + 1;
+
+        try
+ {
+            boolean deletado = dao.DeleteAmigosBD(idInvalido);
+            assertFalse(deletado, "Não deve excluir caso não haja um ID válido");
+        } catch (RuntimeException e) {
+            assertTrue(true, "Erro lançado corretamente para exclusão de ID inválido");
+        } catch (Exception e) {
+            fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
+        }
+    }
 
     @AfterEach
     void limparBanco() {
             dao.DeleteAmigosBD(amigoValido.getId());
             dao.DeleteAmigosBD(amigoInvalido.getId());
     }
-
+    
 }
