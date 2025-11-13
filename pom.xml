@@ -15,6 +15,7 @@
 
     <properties>
         <sonar.organization>ferreirajpg</sonar.organization>
+        <sonar.projectKey>ferreirajpg_PrototipoMaven</sonar.projectKey>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
