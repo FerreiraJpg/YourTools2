@@ -1,0 +1,122 @@
+package Integration;
+
+import DAO.YourToolsDAO;
+import Model.Ferramentas;
+import java.sql.SQLException;
+import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class FerramentasIntegrationTest {
+    
+    static YourToolsDAO dao;
+    Ferramentas ferramentaValida;
+    Ferramentas ferramentaInvalida;
+    
+    @BeforeAll
+    static void setupDAO() {
+        dao = new YourToolsDAO();
+    }
+
+    @BeforeEach
+    void setupDados() throws SQLException {
+        ferramentaValida = new Ferramentas(dao.maiorIDFerramentas() + 1, "Produto Teste Integracao", "Marca Teste Integracao", 27);
+        ferramentaInvalida = new Ferramentas(dao.maiorIDFerramentas() + 1, null, "Marca Teste Integracao", 42);
+    }
+    
+    @Test
+    @Order(1)
+    void testInsertFerramenta() {
+    boolean inserido = dao.InsertFerramentasBD(ferramentaValida);
+    assertTrue(inserido, "A ferramenta deve ser inserida com sucesso");
+    }
+    
+    @Test
+    @Order(2)
+    void testInsertFerramentaIncorreta() {
+        try {
+            boolean inserido = dao.InsertFerramentasBD(ferramentaInvalida);
+            assertFalse(inserido, "O método não deveria retornar true em uma inserção inválida");
+        } catch (RuntimeException e) {
+            assertTrue(true, "Erro lançado corretamente para inserção inválida");
+        } catch (Exception e) {
+            fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
+        }
+    }
+    
+    @Test
+    @Order(3)
+    void testAtualizarFerramenta() {
+        dao.InsertFerramentasBD(ferramentaValida);
+        ferramentaValida.setNome("Ferramenta Atualizada");
+        dao.UpdateFerramentasBD(ferramentaValida);
+
+        Ferramentas ferramentaBanco = dao.carregaFerramentas(ferramentaValida.getId());
+
+        assertNotNull(ferramentaBanco, "a ferramenta atualizada deve existir no banco");
+        assertEquals("Ferramenta Atualizada", ferramentaBanco.getNome(), "O nome do produto deve ter sido atualizado corretamente");
+        dao.DeleteFerramentasBD(ferramentaValida.getId());
+    }
+
+    @Test
+    @Order(4)
+    void testExcluirFerramentaValida() {
+        int ferramentaValidaID = ferramentaValida.getId();
+        boolean deletada = dao.DeleteFerramentasBD(ferramentaValidaID);
+        assertTrue(deletada, "A ferramenta deve ser excluída com sucesso");
+    }
+    
+    @Test
+    @Order(5)
+    void testExcluirFerramentaInvalida() throws SQLException {
+        int idInvalido = dao.maiorIDFerramentas() + 1;
+
+        try
+        {
+            boolean deletada = dao.DeleteFerramentasBD(idInvalido);
+            assertFalse(deletada, "Não deve excluir caso não haja um ID válido");
+        } catch (RuntimeException e) {
+            assertTrue(true, "Erro lançado corretamente para exclusão de ID inválido");
+        } catch (Exception e) {
+            fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
+        }
+    }
+    
+    @Test
+    @Order(6)
+    void testListarFerramentas() {
+        dao.InsertFerramentasBD(ferramentaValida);
+        List<Ferramentas> lista = dao.getMinhaListaFerramentas();
+        assertNotNull(lista);
+        assertFalse(lista.isEmpty(), "A lista de ferramentas deve conter ao menos um registro");
+        dao.DeleteFerramentasBD(ferramentaValida.getId());
+    }
+    
+    @Test
+    @Order(8)
+    void testListarFerramentasVazia() {
+        dao.DeleteFerramentasBD(ferramentaValida.getId());
+        dao.DeleteFerramentasBD(ferramentaInvalida.getId());
+        List<Ferramentas> lista = dao.getMinhaListaFerramentas();
+        assertNotNull(lista);
+        assertTrue(lista.isEmpty(), "A lista de ferramentas deve estar vazia");
+    }
+    
+    @AfterEach
+    void limparBanco() {
+            dao.DeleteFerramentasBD(ferramentaValida.getId());
+            dao.DeleteFerramentasBD(ferramentaInvalida.getId());
+    }
+    
+}
