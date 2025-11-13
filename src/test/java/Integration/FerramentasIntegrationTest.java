@@ -67,6 +67,30 @@ public class FerramentasIntegrationTest {
         assertEquals("Ferramenta Atualizada", ferramentaBanco.getNome(), "O nome do produto deve ter sido atualizado corretamente");
         dao.DeleteFerramentasBD(ferramentaValida.getId());
     }
+
+    @Test
+    @Order(4)
+    void testExcluirFerramentaValida() {
+        int ferramentaValidaID = ferramentaValida.getId();
+        boolean deletada = dao.DeleteFerramentasBD(ferramentaValidaID);
+        assertTrue(deletada, "A ferramenta deve ser excluída com sucesso");
+    }
+    
+    @Test
+    @Order(5)
+    void testExcluirFerramentaInvalida() throws SQLException {
+        int idInvalido = dao.maiorIDFerramentas() + 1;
+
+        try
+        {
+            boolean deletada = dao.DeleteFerramentasBD(idInvalido);
+            assertFalse(deletada, "Não deve excluir caso não haja um ID válido");
+        } catch (RuntimeException e) {
+            assertTrue(true, "Erro lançado corretamente para exclusão de ID inválido");
+        } catch (Exception e) {
+            fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
+        }
+    }
     
     @AfterEach
     void limparBanco() {
