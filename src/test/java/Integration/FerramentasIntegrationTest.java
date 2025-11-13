@@ -3,6 +3,7 @@ package Integration;
 import DAO.YourToolsDAO;
 import Model.Ferramentas;
 import java.sql.SQLException;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -90,6 +91,26 @@ public class FerramentasIntegrationTest {
         } catch (Exception e) {
             fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
         }
+    }
+    
+    @Test
+    @Order(6)
+    void testListarFerramentas() {
+        dao.InsertFerramentasBD(ferramentaValida);
+        List<Ferramentas> lista = dao.getMinhaListaFerramentas();
+        assertNotNull(lista);
+        assertFalse(lista.isEmpty(), "A lista de ferramentas deve conter ao menos um registro");
+        dao.DeleteFerramentasBD(ferramentaValida.getId());
+    }
+    
+    @Test
+    @Order(8)
+    void testListarFerramentasVazia() {
+        dao.DeleteFerramentasBD(ferramentaValida.getId());
+        dao.DeleteFerramentasBD(ferramentaInvalida.getId());
+        List<Ferramentas> lista = dao.getMinhaListaFerramentas();
+        assertNotNull(lista);
+        assertTrue(lista.isEmpty(), "A lista de ferramentas deve estar vazia");
     }
     
     @AfterEach
