@@ -45,10 +45,39 @@ public class AmigosIntegrationTest {
         }
     }
     
+    @Test
+    @Order(3)
+    void testAtualizarAmigo() {
+        dao.InsertAmigosBD(amigoValido);
+        amigoValido.setNome("Amigo Atualizado");
+        dao.UpdateAmigosBD(amigoValido);
+
+        Amigos amigoBanco = dao.carregaAmigos(amigoValido.getId());
+
+        assertNotNull(amigoBanco, "O amigo atualizado deve existir no banco");
+        assertEquals("Amigo Atualizado", amigoBanco.getNome(), "O nome deve ter sido atualizado corretamente");
+    }
+    
+    @Test
+    @Order(4)
+    void testAtualizarAmigoDadoInvalido() {
+        dao.InsertAmigosBD(amigoValido);
+        amigoValido.setNome(null);
+        
+        try {
+            boolean atualizado = dao.UpdateAmigosBD(amigoValido);
+            assertFalse(atualizado, "O método não deveria retornar true em um ajuste inválido");
+        } catch (RuntimeException e) {
+            assertTrue(true, "Erro lançado corretamente para ajuste inválido");
+        } catch (Exception e) {
+            fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
+        }
+    }
+
     @AfterEach
     void limparBanco() {
-        dao.DeleteAmigosBD(amigoValido.getId());
-        dao.DeleteAmigosBD(amigoInvalido.getId());
+            dao.DeleteAmigosBD(amigoValido.getId());
+            dao.DeleteAmigosBD(amigoInvalido.getId());
     }
 
 }
