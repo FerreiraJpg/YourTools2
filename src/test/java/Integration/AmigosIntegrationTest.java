@@ -3,6 +3,7 @@ package Integration;
 import DAO.YourToolsDAO;
 import Model.Amigos;
 import java.sql.SQLException;
+import java.util.List;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,6 +57,7 @@ public class AmigosIntegrationTest {
 
         assertNotNull(amigoBanco, "O amigo atualizado deve existir no banco");
         assertEquals("Amigo Atualizado", amigoBanco.getNome(), "O nome deve ter sido atualizado corretamente");
+        dao.DeleteAmigosBD(amigoValido.getId());
     }
     
     @Test
@@ -72,6 +74,7 @@ public class AmigosIntegrationTest {
         } catch (Exception e) {
             fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
         }
+        dao.DeleteAmigosBD(amigoValido.getId());
     }
     
     @Test
@@ -88,7 +91,7 @@ public class AmigosIntegrationTest {
         int idInvalido = dao.maiorIDAmigos() + 1;
 
         try
- {
+        {
             boolean deletado = dao.DeleteAmigosBD(idInvalido);
             assertFalse(deletado, "Não deve excluir caso não haja um ID válido");
         } catch (RuntimeException e) {
@@ -96,6 +99,26 @@ public class AmigosIntegrationTest {
         } catch (Exception e) {
             fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
         }
+    }
+    
+    @Test
+    @Order(7)
+    void testListarAmigos() {
+        dao.InsertAmigosBD(amigoValido);
+        List<Amigos> lista = dao.getMinhaListaAmigos();
+        assertNotNull(lista);
+        assertFalse(lista.isEmpty(), "A lista de amigos deve conter ao menos um registro");
+        dao.DeleteAmigosBD(amigoValido.getId());
+    }
+    
+    @Test
+    @Order(8)
+    void testListarAmigosZerado() {
+        dao.DeleteAmigosBD(amigoValido.getId());
+        dao.DeleteAmigosBD(amigoInvalido.getId());
+        List<Amigos> lista = dao.getMinhaListaAmigos();
+        assertNotNull(lista);
+        assertTrue(lista.isEmpty(), "A lista de amigos deve estar vazia");
     }
 
     @AfterEach
