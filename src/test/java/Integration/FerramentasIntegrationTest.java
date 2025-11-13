@@ -4,7 +4,9 @@ import DAO.YourToolsDAO;
 import Model.Ferramentas;
 import java.sql.SQLException;
 import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
@@ -50,6 +52,20 @@ public class FerramentasIntegrationTest {
         } catch (Exception e) {
             fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
         }
+    }
+    
+    @Test
+    @Order(3)
+    void testAtualizarFerramenta() {
+        dao.InsertFerramentasBD(ferramentaValida);
+        ferramentaValida.setNome("Ferramenta Atualizada");
+        dao.UpdateFerramentasBD(ferramentaValida);
+
+        Ferramentas ferramentaBanco = dao.carregaFerramentas(ferramentaValida.getId());
+
+        assertNotNull(ferramentaBanco, "a ferramenta atualizada deve existir no banco");
+        assertEquals("Ferramenta Atualizada", ferramentaBanco.getNome(), "O nome do produto deve ter sido atualizado corretamente");
+        dao.DeleteFerramentasBD(ferramentaValida.getId());
     }
     
     @AfterEach
