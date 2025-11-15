@@ -37,6 +37,9 @@ public class Amigos extends Pessoa {
 
     // Cadastra novo aluno
     public boolean InsertAmigosBD(String nome, int telefone) throws SQLException {
+        if (nome == null || nome.trim().isEmpty() || telefone <= 0) {
+            return false;
+        }
         int id = this.maiorIDAmigos() + 1;
         Amigos objeto = new Amigos(id, nome, telefone);
         dao.InsertAmigosBD(objeto);
@@ -54,6 +57,9 @@ public class Amigos extends Pessoa {
 
     // Edita um aluno específico pelo seu campo ID
     public boolean UpdateAmigosBD(int id, String nome, int telefone) {
+        if (nome == null || nome.trim().isEmpty() || telefone <= 0) {
+            return false;
+        }
         Amigos objeto = new Amigos(id, nome, telefone);
         dao.UpdateAmigosBD(objeto);
         return true;

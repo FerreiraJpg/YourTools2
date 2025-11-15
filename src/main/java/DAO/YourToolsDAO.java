@@ -112,14 +112,6 @@ public class YourToolsDAO {
     public boolean InsertAmigosBD(Amigos objeto) {
         String sql = "INSERT INTO tb_amigos(id,nome,telefone) VALUES(?,?,?)";
 
-        if (objeto.getNome() == null || objeto.getNome().trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome não pode ser nulo/vazio");
-        }
-        
-        if (objeto.getTelefone() < 0 || objeto.getTelefone() == 0) {
-            throw new IllegalArgumentException("Telefone não pode ser nulo/vazio");
-        }
-        
         try (Connection conn = getConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -154,14 +146,6 @@ public class YourToolsDAO {
     public boolean UpdateAmigosBD(Amigos objeto) {
         String sql = "UPDATE tb_amigos SET nome = ?, telefone = ? WHERE id = ?";
 
-        if (objeto.getNome() == null || objeto.getNome().trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome não pode ser nulo/vazio");
-        }
-        
-        if (objeto.getTelefone() < 0 || objeto.getTelefone() == 0) {
-            throw new IllegalArgumentException("Telefone não pode ser nulo/vazio");
-        }
-        
         try (Connection conn = getConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
