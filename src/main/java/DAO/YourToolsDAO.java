@@ -141,8 +141,9 @@ public class YourToolsDAO {
             PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, id);
-            stmt.executeUpdate();
-            return true;
+            int linhasAfetadas = stmt.executeUpdate();
+            
+            return linhasAfetadas > 0;
 
         } catch (SQLException e) {
             System.err.println("Erro ao deletar amigo: " + e.getMessage());

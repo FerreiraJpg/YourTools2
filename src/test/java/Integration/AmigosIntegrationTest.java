@@ -14,6 +14,7 @@ public class AmigosIntegrationTest {
     static YourToolsDAO dao;
     Amigos amigoValido;
     Amigos amigoInvalido;
+    Amigos amigoValidoE;
 
     @BeforeAll
     static void setupDAO() {
@@ -24,6 +25,7 @@ public class AmigosIntegrationTest {
     void setupDados() throws SQLException {
         amigoValido = new Amigos(dao.maiorIDAmigos() + 1, "Teste Integracao", 123456789);
         amigoInvalido = new Amigos(dao.maiorIDAmigos() + 1, null, 999999999);
+        amigoValidoE = new Amigos(8888, null, 999999999);
     }
 
     @Test
@@ -84,6 +86,7 @@ public class AmigosIntegrationTest {
     @Test
     @Order(5)
     void testExcluirAmigo() {
+        dao.InsertAmigosBD(amigoValido);
         int amigoValidoID = amigoValido.getId();
         boolean deletado = dao.DeleteAmigosBD(amigoValidoID);
         assertTrue(deletado, "O amigo deve ser excluído com sucesso");
