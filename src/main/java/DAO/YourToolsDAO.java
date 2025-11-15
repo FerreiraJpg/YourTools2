@@ -33,9 +33,9 @@ public class YourToolsDAO {
             return connection;
 
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Driver SQLite não encontrado! Verifique o pom.xml.", e);
+            throw new IllegalStateException("Driver SQLite não encontrado! Verifique o pom.xml.", e);
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao conectar ao banco de dados SQLite!", e);
+            throw new IllegalStateException("Erro ao conectar ao banco de dados SQLite!", e);
         }
     }
 
@@ -122,7 +122,7 @@ public class YourToolsDAO {
             return true;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao inserir amigo!", e);
+            throw new IllegalArgumentException("Erro ao inserir amigo!", e);
         }
     }
             
@@ -156,7 +156,7 @@ public class YourToolsDAO {
             return true;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao atualizar amigo!", e);
+            throw new IllegalArgumentException("Erro ao atualizar amigo!", e);
         }
     }
 
@@ -252,7 +252,7 @@ public class YourToolsDAO {
             return true;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao inserir ferramenta!", e);
+            throw new IllegalArgumentException("Erro ao inserir ferramenta!", e);
         }
     }
 
@@ -268,8 +268,7 @@ public class YourToolsDAO {
             return linhasAfetadas > 0;
 
         } catch (SQLException e) {
-            System.err.println("Erro ao deletar ferramenta: " + e.getMessage());
-            return false;
+            throw new IllegalStateException("Erro ao carregar ferramenta com id " + id, e);
         }
     }
 
@@ -322,7 +321,7 @@ public class YourToolsDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao carregar ferramenta: " + e.getMessage());
+            throw new IllegalStateException("Erro ao carregar ferramenta: " + e.getMessage());
         }
         return null;
     }
