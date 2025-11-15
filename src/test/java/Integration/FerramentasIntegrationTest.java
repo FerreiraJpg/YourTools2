@@ -155,6 +155,48 @@ public class FerramentasIntegrationTest {
 
         assertEquals("Preço não pode ser nulo/vazio", exception.getMessage());
     }
+    
+    @Test
+    @Order(11)
+    void testAtualizarFerramentaNomeInvalido() {
+        dao.InsertFerramentasBD(ferramentaValida);
+        
+        ferramentaValida.setNome(null);
+        
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            dao.UpdateFerramentasBD(ferramentaValida);
+        });
+
+        dao.DeleteFerramentasBD(ferramentaValida.getId());
+    }
+    
+    @Test
+    @Order(12)
+    void testAtualizarFerramentaMarcaInvalido() {
+        dao.InsertFerramentasBD(ferramentaValida);
+        
+        ferramentaValida.setMarca(null);
+        
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            dao.UpdateFerramentasBD(ferramentaValida);
+        });
+
+        dao.DeleteFerramentasBD(ferramentaValida.getId());
+    }
+    
+    @Test
+    @Order(13)
+    void testAtualizarFerramentaPrecoInvalido() {
+        dao.InsertFerramentasBD(ferramentaValida);
+        
+        ferramentaValida.setCustoAquisicao(0);
+        
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            dao.UpdateFerramentasBD(ferramentaValida);
+        });
+
+        dao.DeleteFerramentasBD(ferramentaValida.getId());
+    }
 
     
     @AfterEach
