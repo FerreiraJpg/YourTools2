@@ -121,17 +121,12 @@ public class AmigosIntegrationTest {
     @Test
     @Order(8)
     void testListarAmigosZerado() {
-        dao.DeleteAmigosBD(amigoValido.getId());
-        dao.DeleteAmigosBD(amigoInvalido.getId());
+        List<Amigos> todosAmigos = dao.getMinhaListaAmigos();
+        for (Amigos a : todosAmigos) {
+            dao.DeleteAmigosBD(a.getId());
+        }
         List<Amigos> lista = dao.getMinhaListaAmigos();
         assertNotNull(lista);
         assertTrue(lista.isEmpty(), "A lista de amigos deve estar vazia");
     }
-
-    @AfterEach
-    void limparBanco() {
-        dao.DeleteAmigosBD(amigoValido.getId());
-        dao.DeleteAmigosBD(amigoInvalido.getId());
-    }
-    
 }
