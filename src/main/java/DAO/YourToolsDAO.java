@@ -2,49 +2,34 @@ package DAO;
 
 import Model.Amigos;
 import Model.Ferramentas;
-import java.util.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Properties;
 
 public class YourToolsDAO {
 
-    public static ArrayList<Amigos> MinhaLista = new ArrayList<Amigos>();
+    public static ArrayList<Amigos> MinhaLista = new ArrayList<>();
+    public static ArrayList<Ferramentas> MinhaListaFerramentas = new ArrayList<>();
 
     public YourToolsDAO() {
-    
-    criarTabelas(); 
-}
-
-    public int maiorIDAmigos() throws SQLException {
-
-        int maiorID = 0;
-        try {
-            Statement stmt = this.getConexao().createStatement();
-            ResultSet res = stmt.executeQuery("SELECT MAX(id) id FROM tb_amigos");
-            res.next();
-            maiorID = res.getInt("id");
-
-            stmt.close();
-
-        } catch (SQLException ex) {
-        }
-
-        return maiorID;
+        criarTabelas();
     }
 
     public Connection getConexao() {
         try {
-
             Class.forName("org.sqlite.JDBC");
-
             String url = "jdbc:sqlite:db_yourtools.db";
 
-            Connection connection = DriverManager.getConnection(url);
-            System.out.println("Conectado ao SQLite com sucesso!");
+            Properties props = new Properties();
+            props.setProperty("busy_timeout", "5000");
+
+            Connection connection = DriverManager.getConnection(url, props);
+
             return connection;
 
         } catch (ClassNotFoundException e) {
@@ -54,22 +39,24 @@ public class YourToolsDAO {
         }
     }
 
-    
     public void criarTabelas() {
-        String sqlAmigos = "CREATE TABLE IF NOT EXISTS tb_amigos ("
-                + "id INTEGER PRIMARY KEY,"
-                + "nome TEXT NOT NULL,"
-                + "telefone INTEGER"
-                + ")";
+        String sqlAmigos =
+                "CREATE TABLE IF NOT EXISTS tb_amigos (" +
+                        "id INTEGER PRIMARY KEY," +
+                        "nome TEXT NOT NULL," +
+                        "telefone INTEGER" +
+                        ")";
 
-        String sqlFerramentas = "CREATE TABLE IF NOT EXISTS tb_ferramentas ("
-                + "id INTEGER PRIMARY KEY,"
-                + "nome TEXT NOT NULL,"
-                + "marca TEXT,"
-                + "custoAquisicao REAL"
-                + ")";
+        String sqlFerramentas =
+                "CREATE TABLE IF NOT EXISTS tb_ferramentas (" +
+                        "id INTEGER PRIMARY KEY," +
+                        "nome TEXT NOT NULL," +
+                        "marca TEXT," +
+                        "custoAquisicao REAL" +
+                        ")";
 
-        try (Connection conn = this.getConexao(); Statement stmt = conn.createStatement()) {
+        try (Connection conn = getConexao();
+             Statement stmt = conn.createStatement()) {
 
             stmt.execute(sqlAmigos);
             stmt.execute(sqlFerramentas);
@@ -79,260 +66,238 @@ public class YourToolsDAO {
             System.err.println("Erro ao criar tabelas no SQLite: " + e.getMessage());
         }
     }
-// -----------------------------------------------------------------------
-//  -- retorna a Lista de Amigos -- 
-// -----------------------------------------------------------------------
 
-    public ArrayList getMinhaListaAmigos() {
+    // ------------------------------------------------------------
+    //  AMIGOS
+    // ------------------------------------------------------------
 
-        MinhaLista.clear(); // Limpa nosso ArrayList
+    public int maiorIDAmigos() {
+        String sql = "SELECT MAX(id) AS id FROM tb_amigos";
 
-        try {
-            Statement stmt = this.getConexao().createStatement();
-            ResultSet res = stmt.executeQuery("SELECT * FROM tb_amigos");
+        try (Connection conn = getConexao();
+             Statement stmt = conn.createStatement();
+             ResultSet res = stmt.executeQuery(sql)) {
+
+            return res.next() ? res.getInt("id") : 0;
+
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+
+    public ArrayList<Amigos> getMinhaListaAmigos() {
+        MinhaLista.clear();
+        String sql = "SELECT * FROM tb_amigos";
+
+        try (Connection conn = getConexao();
+             Statement stmt = conn.createStatement();
+             ResultSet res = stmt.executeQuery(sql)) {
+
             while (res.next()) {
-
                 int id = res.getInt("id");
                 String nome = res.getString("nome");
                 int telefone = res.getInt("telefone");
 
                 Amigos objeto = new Amigos(id, nome, telefone);
-
+                
                 MinhaLista.add(objeto);
             }
 
-            stmt.close();
-
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar amigos: " + e.getMessage());
         }
-
         return MinhaLista;
     }
-// -----------------------------------------------------------------------
-//  -- Cadastrar um novo Amigo -- 
-// -----------------------------------------------------------------------
 
-    public boolean InsertAmigosBD(Amigos objeto) {
+    public boolean InsertAmigosBD(Amigos obj) {
         String sql = "INSERT INTO tb_amigos(id,nome,telefone) VALUES(?,?,?)";
 
-        try {
-            PreparedStatement stmt = this.getConexao().prepareStatement(sql);
+        try (Connection conn = getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, objeto.getId());
-            stmt.setString(2, objeto.getNome());
-            stmt.setInt(3, objeto.getTelefone());
-
+            stmt.setInt(1, obj.getId());
+            stmt.setString(2, obj.getNome());
+            stmt.setInt(3, obj.getTelefone());
             stmt.execute();
-            stmt.close();
-
             return true;
 
-        } catch (SQLException erro) {
-            throw new RuntimeException(erro);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao inserir amigo!", e);
         }
-
     }
-
-    // -----------------------------------------------------------------------
-//  -- Deletar um Amigo especifico pelo seu campo ID -- 
-// -----------------------------------------------------------------------    
+            
     public boolean DeleteAmigosBD(int id) {
-        try {
-            Statement stmt = this.getConexao().createStatement();
-            stmt.executeUpdate("DELETE FROM tb_amigos WHERE id = " + id);
-            stmt.close();
+        String sql = "DELETE FROM tb_amigos WHERE id = ?";
 
-        } catch (SQLException erro) {
+        try (Connection conn = getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao deletar amigo: " + e.getMessage());
+            return false;
         }
-
-        return true;
     }
-// -----------------------------------------------------------------------
-//  -- Edita um Amigo pelo campo ID -- 
-// -----------------------------------------------------------------------
 
     public boolean UpdateAmigosBD(Amigos objeto) {
+        String sql = "UPDATE tb_amigos SET nome = ?, telefone = ? WHERE id = ?";
 
-        String sql = "UPDATE tb_amigos set nome = ?, telefone = ? WHERE id = ?";
-
-        try {
-            PreparedStatement stmt = this.getConexao().prepareStatement(sql);
+        try (Connection conn = getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, objeto.getNome());
             stmt.setInt(2, objeto.getTelefone());
             stmt.setInt(3, objeto.getId());
-
             stmt.execute();
-            stmt.close();
-
             return true;
 
-        } catch (SQLException erro) {
-            throw new RuntimeException(erro);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao atualizar amigo!", e);
         }
-
     }
 
     public Amigos carregaAmigos(int id) {
+        String sql = "SELECT * FROM tb_amigos WHERE id = ?";
 
-        try {
-            Statement stmt = this.getConexao().createStatement();
-            ResultSet res = stmt.executeQuery("SELECT * FROM tb_amigos WHERE id = " + id);
+        try (Connection conn = getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet res = stmt.executeQuery();
+
             if (res.next()) {
-                Amigos objeto = new Amigos();
-                objeto.setId(id);
-                objeto.setNome(res.getString("nome"));
-                objeto.setTelefone(res.getInt("telefone"));
-                stmt.close();
-                return objeto;
-            } else {
-                stmt.close();
-                return null; // Return null if no amigo is found
+                return new Amigos(
+                        id,
+                        res.getString("nome"),
+                        res.getInt("telefone")
+                );
             }
 
-        } catch (SQLException erro) {
-            System.err.println("Erro ao carregar amigo: " + erro.getMessage());
-            return null;
+        } catch (SQLException e) {
+            System.err.println("Erro ao carregar amigo: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    // ------------------------------------------------------------
+    //  FERRAMENTAS
+    // ------------------------------------------------------------
+
+    public int maiorIDFerramentas() {
+        String sql = "SELECT MAX(id) AS id FROM tb_ferramentas";
+
+        try (Connection conn = getConexao();
+             Statement stmt = conn.createStatement();
+             ResultSet res = stmt.executeQuery(sql)) {
+
+            return res.next() ? res.getInt("id") : 0;
+
+        } catch (SQLException e) {
+            return 0;
         }
     }
 
-    // -----------------------------------------------------------------------
-    //  -- ArrayList das Ferramentas -- 
-    // -----------------------------------------------------------------------
-    public static ArrayList<Ferramentas> MinhaListaFerramentas = new ArrayList<Ferramentas>();
+    public ArrayList<Ferramentas> getMinhaListaFerramentas() {
+        MinhaListaFerramentas.clear();
+        String sql = "SELECT * FROM tb_ferramentas";
 
-    public int maiorIDFerramentas() throws SQLException {
+        try (Connection conn = getConexao();
+             Statement stmt = conn.createStatement();
+             ResultSet res = stmt.executeQuery(sql)) {
 
-        int maiorID = 0;
-        try {
-            Statement stmt = this.getConexao().createStatement();
-            ResultSet res = stmt.executeQuery("SELECT MAX(id) id FROM tb_ferramentas");
-            res.next();
-            maiorID = res.getInt("id");
-
-            stmt.close();
-
-        } catch (SQLException ex) {
-        }
-
-        return maiorID;
-    }
-
-    // -----------------------------------------------------------------------
-//  -- retorna a Lista de Ferramentas -- 
-// -----------------------------------------------------------------------
-    public ArrayList getMinhaListaFerramentas() {
-
-        MinhaListaFerramentas.clear(); // Limpa nosso ArrayList
-
-        try {
-            Statement stmt = this.getConexao().createStatement();
-            ResultSet res = stmt.executeQuery("SELECT * FROM tb_ferramentas");
             while (res.next()) {
-
-                int id = res.getInt("id");
-                String nome = res.getString("nome");
-                String marca = res.getString("marca");
-                double custoAquisicao = res.getDouble("custoAquisicao");
-
-                Ferramentas objeto = new Ferramentas(id, nome, marca, custoAquisicao);
-
-                MinhaListaFerramentas.add(objeto);
+                Ferramentas f = new Ferramentas(
+                        res.getInt("id"),
+                        res.getString("nome"),
+                        res.getString("marca"),
+                        res.getDouble("custoAquisicao")
+                );
+                MinhaListaFerramentas.add(f);
             }
 
-            stmt.close();
-
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar ferramentas: " + e.getMessage());
         }
-
         return MinhaListaFerramentas;
     }
 
-    // -----------------------------------------------------------------------
-//  -- Cadastrar uma nova Ferramenta -- 
-// -----------------------------------------------------------------------
-    public boolean InsertFerramentasBD(Ferramentas objeto) {
+    public boolean InsertFerramentasBD(Ferramentas obj) {
         String sql = "INSERT INTO tb_ferramentas(id,nome,marca,custoAquisicao) VALUES(?,?,?,?)";
 
-        try {
-            PreparedStatement stmt = this.getConexao().prepareStatement(sql);
+        try (Connection conn = getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, objeto.getId());
-            stmt.setString(2, objeto.getNome());
-            stmt.setString(3, objeto.getMarca());
-            stmt.setDouble(4, objeto.getCustoAquisicao());
-
+            stmt.setInt(1, obj.getId());
+            stmt.setString(2, obj.getNome());
+            stmt.setString(3, obj.getMarca());
+            stmt.setDouble(4, obj.getCustoAquisicao());
             stmt.execute();
-            stmt.close();
-
             return true;
 
-        } catch (SQLException erro) {
-            throw new RuntimeException(erro);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao inserir ferramenta!", e);
         }
-
     }
 
-    // -----------------------------------------------------------------------
-//  -- Deletar uma ferramenta especifica pelo seu campo ID -- 
-// -----------------------------------------------------------------------    
     public boolean DeleteFerramentasBD(int id) {
-        try {
-            Statement stmt = this.getConexao().createStatement();
-            stmt.executeUpdate("DELETE FROM tb_ferramentas WHERE id = " + id);
-            stmt.close();
+        String sql = "DELETE FROM tb_ferramentas WHERE id = ?";
 
-        } catch (SQLException erro) {
+        try (Connection conn = getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao deletar ferramenta: " + e.getMessage());
+            return false;
         }
-
-        return true;
     }
 
-    // -----------------------------------------------------------------------
-//  -- Edita uma Ferramenta pelo campo ID -- 
-// -----------------------------------------------------------------------
     public boolean UpdateFerramentasBD(Ferramentas obj) {
+        String sql = "UPDATE tb_ferramentas SET nome = ?, marca = ?, custoAquisicao = ? WHERE id = ?";
 
-    // 1. CORREÇÃO: O SQL deve atualizar nome, marca e custoAquisicao
-    String sql = "UPDATE tb_ferramentas set nome = ?, marca = ?, custoAquisicao = ? WHERE id = ?"; 
+        try (Connection conn = getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    try (PreparedStatement stmt = this.getConexao().prepareStatement(sql)) {
+            stmt.setString(1, obj.getNome());
+            stmt.setString(2, obj.getMarca());
+            stmt.setDouble(3, obj.getCustoAquisicao());
+            stmt.setInt(4, obj.getId());
+            stmt.execute();
+            return true;
 
-        // 2. CORREÇÃO: Mapeamento dos parâmetros na ordem correta
-        stmt.setString(1, obj.getNome());
-        stmt.setString(2, obj.getMarca());
-        stmt.setDouble(3, obj.getCustoAquisicao());
-        stmt.setInt(4, obj.getId()); // ID é o último, usado no WHERE
-
-        stmt.execute();
-        return true;
-
-    } catch (SQLException e) {
-        // Lança uma exceção para o teste capturar
-        throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao atualizar ferramenta!", e);
         }
-
     }
 
     public Ferramentas carregaFerramentas(int id) {
+        String sql = "SELECT * FROM tb_ferramentas WHERE id = ?";
 
-        Ferramentas objeto = new Ferramentas();
-        objeto.setId(id);
+        try (Connection conn = getConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        try {
-            Statement stmt = this.getConexao().createStatement();
-            ResultSet res = stmt.executeQuery("SELECT * FROM tb_ferramentas WHERE id = " + id);
-            res.next();
+            stmt.setInt(1, id);
+            ResultSet res = stmt.executeQuery();
 
-            objeto.setNome(res.getString("nome"));
-            objeto.setMarca(res.getString("marca"));
-            objeto.setCustoAquisicao(res.getInt("custo de aquisicao"));
+            if (res.next()) {
+                return new Ferramentas(
+                        id,
+                        res.getString("nome"),
+                        res.getString("marca"),
+                        res.getDouble("custoAquisicao")
+                );
+            }
 
-            stmt.close();
-
-        } catch (SQLException erro) {
+        } catch (SQLException e) {
+            System.err.println("Erro ao carregar ferramenta: " + e.getMessage());
         }
-        return objeto;
+        return null;
     }
-
 }
