@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,7 +23,9 @@ public class FerramentasIntegrationTest {
     
     static YourToolsDAO dao;
     Ferramentas ferramentaValida;
-    Ferramentas ferramentaInvalida;
+    Ferramentas ferramentaNomeInvalido;
+    Ferramentas ferramentaMarcaInvalida;
+    Ferramentas ferramentaPrecoInvalido;
     
     @BeforeAll
     static void setupDAO() {
@@ -32,7 +35,9 @@ public class FerramentasIntegrationTest {
     @BeforeEach
     void setupDados() throws SQLException {
         ferramentaValida = new Ferramentas(dao.maiorIDFerramentas() + 1, "Produto Teste Integracao", "Marca Teste Integracao", 27);
-        ferramentaInvalida = new Ferramentas(dao.maiorIDFerramentas() + 1, null, "Marca Teste Integracao", 42);
+        ferramentaNomeInvalido = new Ferramentas(dao.maiorIDFerramentas() + 1, null, "Marca Teste Integracao", 42);
+        ferramentaMarcaInvalida = new Ferramentas(dao.maiorIDFerramentas() + 1, "Nome Teste Integracao", null, 42);
+        ferramentaPrecoInvalido = new Ferramentas(dao.maiorIDFerramentas() + 1, "Nome Teste Integracao", "Marca Teste Integracao", 0);
     }
     
     @Test
@@ -46,7 +51,7 @@ public class FerramentasIntegrationTest {
     @Order(2)
     void testInsertFerramentaIncorreta() {
         try {
-            boolean inserido = dao.InsertFerramentasBD(ferramentaInvalida);
+            boolean inserido = dao.InsertFerramentasBD(ferramentaNomeInvalido);
             assertFalse(inserido, "O método não deveria retornar true em uma inserção inválida");
         } catch (IllegalArgumentException e) {
             assertTrue(true, "Erro lançado corretamente para inserção inválida");
@@ -61,17 +66,11 @@ public class FerramentasIntegrationTest {
     @Order(3)
     void testAtualizarFerramenta() {
         dao.InsertFerramentasBD(ferramentaValida);
-        System.out.println("ID da ferramenta antes do update: " + ferramentaValida.getMarca());
-        System.out.println("ID da ferramenta antes do update: " + ferramentaValida.getCustoAquisicao());
         
         ferramentaValida.setNome("Ferramenta Atualizada");
         ferramentaValida.setMarca("Marca Atualizada");
         ferramentaValida.setCustoAquisicao(25);
         dao.UpdateFerramentasBD(ferramentaValida);
-
-
-        System.out.println("ID da ferramenta depois do update: " + ferramentaValida.getMarca());
-        System.out.println("ID da ferramenta depois do update: " + ferramentaValida.getCustoAquisicao());
         
         Ferramentas ferramentaBanco = dao.carregaFerramentas(ferramentaValida.getId());
 
@@ -91,7 +90,7 @@ public class FerramentasIntegrationTest {
     
     @Test
     @Order(5)
-    void testExcluirFerramentaInvalida() throws SQLException {
+    void testExcluirferramentaNomeInvalido() throws SQLException {
         int idInvalido = dao.maiorIDFerramentas() + 1;
 
         try
@@ -102,8 +101,6 @@ public class FerramentasIntegrationTest {
             assertTrue(true, "Erro lançado corretamente para inserção inválida");
         } catch (RuntimeException e) {
             assertTrue(true, "Erro lançado corretamente para exclusão de ID inválido");
-        } catch (Exception e) {
-            fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
         }
     }
     
@@ -118,7 +115,7 @@ public class FerramentasIntegrationTest {
     }
     
     @Test
-    @Order(8)
+    @Order(7)
     void testListarFerramentasVazia() {
         List<Ferramentas> todosFerramentas = dao.getMinhaListaFerramentas();
         for (Ferramentas a : todosFerramentas) {
@@ -129,10 +126,41 @@ public class FerramentasIntegrationTest {
         assertTrue(lista.isEmpty(), "A lista de ferramentas deve estar vazia");
     }
     
+    @Test
+    @Order(8)
+    void testDeleteFerramentaBDCatch() throws Exception {
+        YourToolsDAO daoErro = new YourToolsDAO();
+        daoErro.getConexao().close();
+
+        boolean resultado = daoErro.DeleteFerramentasBD(1);
+        assertFalse(resultado, "Quando ocorrer SQLException, o método deve retornar false");
+    }
+
+    @Test
+    @Order(9)
+    void testInsertFerramentasMarcaInvalida() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            dao.InsertFerramentasBD(ferramentaMarcaInvalida);
+        });
+
+        assertEquals("Marca não pode ser nulo/vazio", exception.getMessage());
+    }
+    
+    @Test
+    @Order(10)
+    void testInsertFerramentasPrecoInvalido() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            dao.InsertFerramentasBD(ferramentaPrecoInvalido);
+        });
+
+        assertEquals("Preço não pode ser nulo/vazio", exception.getMessage());
+    }
+
+    
     @AfterEach
     void limparBanco() {
         dao.DeleteFerramentasBD(ferramentaValida.getId());
-        dao.DeleteFerramentasBD(ferramentaInvalida.getId());
+        dao.DeleteFerramentasBD(ferramentaNomeInvalido.getId());
     }
     
 }
