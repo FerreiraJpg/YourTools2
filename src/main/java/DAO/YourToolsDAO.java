@@ -245,7 +245,7 @@ public class YourToolsDAO {
     public boolean InsertFerramentasBD(Ferramentas obj) {
         String sql = "INSERT INTO tb_ferramentas(id,nome,marca,custoAquisicao) VALUES(?,?,?,?)";
 
-        if (obj.getMarca()== null || obj.getMarca().trim().isEmpty()) {
+        if (obj.getNome()== null || obj.getNome().trim().isEmpty()) {
             throw new IllegalArgumentException("Nome não pode ser nulo/vazio");
         }
         
@@ -292,7 +292,7 @@ public class YourToolsDAO {
     public boolean UpdateFerramentasBD(Ferramentas obj) {
         String sql = "UPDATE tb_ferramentas SET nome = ?, marca = ?, custoAquisicao = ? WHERE id = ?";
         
-        if (obj.getMarca()== null || obj.getMarca().trim().isEmpty()) {
+        if (obj.getNome()== null || obj.getNome().trim().isEmpty()) {
             throw new IllegalArgumentException("Nome não pode ser nulo/vazio");
         }
         
