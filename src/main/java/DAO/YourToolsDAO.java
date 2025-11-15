@@ -291,25 +291,25 @@ public class YourToolsDAO {
     // -----------------------------------------------------------------------
 //  -- Edita uma Ferramenta pelo campo ID -- 
 // -----------------------------------------------------------------------
-    public boolean UpdateFerramentasBD(Ferramentas objeto) {
+    public boolean UpdateFerramentasBD(Ferramentas obj) {
 
-        String sql = "UPDATE tb_ferramentas set nome = ?  ,telefone = ? WHERE id = ?";
+    // 1. CORREÇÃO: O SQL deve atualizar nome, marca e custoAquisicao
+    String sql = "UPDATE tb_ferramentas set nome = ?, marca = ?, custoAquisicao = ? WHERE id = ?"; 
 
-        try {
-            PreparedStatement stmt = this.getConexao().prepareStatement(sql);
+    try (PreparedStatement stmt = this.getConexao().prepareStatement(sql)) {
 
-            stmt.setInt(1, objeto.getId());
-            stmt.setString(2, objeto.getNome());
-            stmt.setString(3, objeto.getMarca());
-            stmt.setDouble(4, objeto.getCustoAquisicao());
+        // 2. CORREÇÃO: Mapeamento dos parâmetros na ordem correta
+        stmt.setString(1, obj.getNome());
+        stmt.setString(2, obj.getMarca());
+        stmt.setDouble(3, obj.getCustoAquisicao());
+        stmt.setInt(4, obj.getId()); // ID é o último, usado no WHERE
 
-            stmt.execute();
-            stmt.close();
+        stmt.execute();
+        return true;
 
-            return true;
-
-        } catch (SQLException erro) {
-            throw new RuntimeException(erro);
+    } catch (SQLException e) {
+        // Lança uma exceção para o teste capturar
+        throw new RuntimeException(e);
         }
 
     }
