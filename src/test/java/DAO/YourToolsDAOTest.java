@@ -130,4 +130,17 @@ public class YourToolsDAOTest {
         assertNotNull(lista, "A lista de amigos não deve ser nula.");
         assertTrue(lista.isEmpty(), "A lista de amigos deve estar vazia após a exclusão dos registros de teste.");
     }
+
+    @Test
+    @Order(12)
+    public void testGetMinhaListaFerramentas_Vazia() {
+
+        dao.DeleteFerramentasBD(ID_FERRAMENTA_TESTE);
+
+        ArrayList<Ferramentas> lista = dao.getMinhaListaFerramentas();
+
+        assertNotNull(lista, "A lista de ferramentas não deve ser nula.");
+        assertTrue(lista.isEmpty(), "A lista de ferramentas deve estar vazia após a limpeza.");
+    }
+
 }
