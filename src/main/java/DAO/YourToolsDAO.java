@@ -244,6 +244,18 @@ public class YourToolsDAO {
     public boolean InsertFerramentasBD(Ferramentas obj) {
         String sql = "INSERT INTO tb_ferramentas(id,nome,marca,custoAquisicao) VALUES(?,?,?,?)";
 
+        if (obj.getMarca()== null || obj.getMarca().trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome não pode ser nulo/vazio");
+        }
+        
+        if (obj.getMarca()== null || obj.getMarca().trim().isEmpty()) {
+            throw new IllegalArgumentException("Marca não pode ser nulo/vazio");
+        }
+        
+        if (obj.getCustoAquisicao()< 0 || obj.getCustoAquisicao() == 0) {
+            throw new IllegalArgumentException("Preço não pode ser nulo/vazio");
+        }
+        
         try (Connection conn = getConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -277,6 +289,18 @@ public class YourToolsDAO {
 
     public boolean UpdateFerramentasBD(Ferramentas obj) {
         String sql = "UPDATE tb_ferramentas SET nome = ?, marca = ?, custoAquisicao = ? WHERE id = ?";
+        
+        if (obj.getMarca()== null || obj.getMarca().trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome não pode ser nulo/vazio");
+        }
+        
+        if (obj.getMarca()== null || obj.getMarca().trim().isEmpty()) {
+            throw new IllegalArgumentException("Marca não pode ser nulo/vazio");
+        }
+        
+        if (obj.getCustoAquisicao()< 0 || obj.getCustoAquisicao() == 0) {
+            throw new IllegalArgumentException("Preço não pode ser nulo/vazio");
+        }
 
         try (Connection conn = getConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
