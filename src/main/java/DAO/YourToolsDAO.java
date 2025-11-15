@@ -109,15 +109,23 @@ public class YourToolsDAO {
         return MinhaLista;
     }
 
-    public boolean InsertAmigosBD(Amigos obj) {
+    public boolean InsertAmigosBD(Amigos objeto) {
         String sql = "INSERT INTO tb_amigos(id,nome,telefone) VALUES(?,?,?)";
 
+        if (objeto.getNome() == null || objeto.getNome().trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome não pode ser nulo/vazio");
+        }
+        
+        if (objeto.getTelefone() < 0 || objeto.getTelefone() == 0) {
+            throw new IllegalArgumentException("Telefone não pode ser nulo/vazio");
+        }
+        
         try (Connection conn = getConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, obj.getId());
-            stmt.setString(2, obj.getNome());
-            stmt.setInt(3, obj.getTelefone());
+            stmt.setInt(1, objeto.getId());
+            stmt.setString(2, objeto.getNome());
+            stmt.setInt(3, objeto.getTelefone());
             stmt.execute();
             return true;
 
@@ -130,7 +138,7 @@ public class YourToolsDAO {
         String sql = "DELETE FROM tb_amigos WHERE id = ?";
 
         try (Connection conn = getConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, id);
             stmt.executeUpdate();
@@ -145,6 +153,14 @@ public class YourToolsDAO {
     public boolean UpdateAmigosBD(Amigos objeto) {
         String sql = "UPDATE tb_amigos SET nome = ?, telefone = ? WHERE id = ?";
 
+        if (objeto.getNome() == null || objeto.getNome().trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome não pode ser nulo/vazio");
+        }
+        
+        if (objeto.getTelefone() < 0 || objeto.getTelefone() == 0) {
+            throw new IllegalArgumentException("Telefone não pode ser nulo/vazio");
+        }
+        
         try (Connection conn = getConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
