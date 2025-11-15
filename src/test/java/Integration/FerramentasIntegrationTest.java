@@ -83,6 +83,7 @@ public class FerramentasIntegrationTest {
     @Test
     @Order(4)
     void testExcluirFerramentaValida() {
+        dao.InsertFerramentasBD(ferramentaValida);
         int ferramentaValidaID = ferramentaValida.getId();
         boolean deletada = dao.DeleteFerramentasBD(ferramentaValidaID);
         assertTrue(deletada, "A ferramenta deve ser excluída com sucesso");
@@ -119,8 +120,10 @@ public class FerramentasIntegrationTest {
     @Test
     @Order(8)
     void testListarFerramentasVazia() {
-        dao.DeleteFerramentasBD(ferramentaValida.getId());
-        dao.DeleteFerramentasBD(ferramentaInvalida.getId());
+        List<Ferramentas> todosFerramentas = dao.getMinhaListaFerramentas();
+        for (Ferramentas a : todosFerramentas) {
+            dao.DeleteFerramentasBD(a.getId());
+        }
         List<Ferramentas> lista = dao.getMinhaListaFerramentas();
         assertNotNull(lista);
         assertTrue(lista.isEmpty(), "A lista de ferramentas deve estar vazia");
