@@ -39,6 +39,8 @@ public class AmigosIntegrationTest {
         try {
             boolean inserido = dao.InsertAmigosBD(amigoInvalido);
             assertFalse(inserido, "O método não deveria retornar true em uma inserção inválida");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true, "Erro lançado corretamente para inserção inválida");
         } catch (RuntimeException e) {
             assertTrue(true, "Erro lançado corretamente para inserção inválida");
         } catch (Exception e) {
@@ -69,6 +71,8 @@ public class AmigosIntegrationTest {
         try {
             boolean atualizado = dao.UpdateAmigosBD(amigoValido);
             assertFalse(atualizado, "O método não deveria retornar true em um ajuste inválido");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true, "Erro lançado corretamente para ajuste inválido");
         } catch (RuntimeException e) {
             assertTrue(true, "Erro lançado corretamente para ajuste inválido");
         } catch (Exception e) {
@@ -123,8 +127,8 @@ public class AmigosIntegrationTest {
 
     @AfterEach
     void limparBanco() {
-            dao.DeleteAmigosBD(amigoValido.getId());
-            dao.DeleteAmigosBD(amigoInvalido.getId());
+        dao.DeleteAmigosBD(amigoValido.getId());
+        dao.DeleteAmigosBD(amigoInvalido.getId());
     }
     
 }

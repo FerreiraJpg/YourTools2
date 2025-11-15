@@ -48,6 +48,8 @@ public class FerramentasIntegrationTest {
         try {
             boolean inserido = dao.InsertFerramentasBD(ferramentaInvalida);
             assertFalse(inserido, "O método não deveria retornar true em uma inserção inválida");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true, "Erro lançado corretamente para inserção inválida");
         } catch (RuntimeException e) {
             assertTrue(true, "Erro lançado corretamente para inserção inválida");
         } catch (Exception e) {
@@ -59,9 +61,18 @@ public class FerramentasIntegrationTest {
     @Order(3)
     void testAtualizarFerramenta() {
         dao.InsertFerramentasBD(ferramentaValida);
+        System.out.println("ID da ferramenta antes do update: " + ferramentaValida.getMarca());
+        System.out.println("ID da ferramenta antes do update: " + ferramentaValida.getCustoAquisicao());
+        
         ferramentaValida.setNome("Ferramenta Atualizada");
+        ferramentaValida.setMarca("Marca Atualizada");
+        ferramentaValida.setCustoAquisicao(25);
         dao.UpdateFerramentasBD(ferramentaValida);
 
+
+        System.out.println("ID da ferramenta depois do update: " + ferramentaValida.getMarca());
+        System.out.println("ID da ferramenta depois do update: " + ferramentaValida.getCustoAquisicao());
+        
         Ferramentas ferramentaBanco = dao.carregaFerramentas(ferramentaValida.getId());
 
         assertNotNull(ferramentaBanco, "a ferramenta atualizada deve existir no banco");
@@ -86,6 +97,8 @@ public class FerramentasIntegrationTest {
         {
             boolean deletada = dao.DeleteFerramentasBD(idInvalido);
             assertFalse(deletada, "Não deve excluir caso não haja um ID válido");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true, "Erro lançado corretamente para inserção inválida");
         } catch (RuntimeException e) {
             assertTrue(true, "Erro lançado corretamente para exclusão de ID inválido");
         } catch (Exception e) {
@@ -115,8 +128,8 @@ public class FerramentasIntegrationTest {
     
     @AfterEach
     void limparBanco() {
-            dao.DeleteFerramentasBD(ferramentaValida.getId());
-            dao.DeleteFerramentasBD(ferramentaInvalida.getId());
+        dao.DeleteFerramentasBD(ferramentaValida.getId());
+        dao.DeleteFerramentasBD(ferramentaInvalida.getId());
     }
     
 }
