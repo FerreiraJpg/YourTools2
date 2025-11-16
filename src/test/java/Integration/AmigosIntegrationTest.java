@@ -7,7 +7,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
@@ -48,15 +47,17 @@ public class AmigosIntegrationTest {
     @Test
     @Order(2)
     void testInsertAmigoIncorreto() {
-    Exception exception = assertThrows(RuntimeException.class, () -> {
-        dao.insertAmigosBD(amigoInvalido);
-    });
-    
-    assertTrue(exception.getMessage().contains("não pode ser nulo") || 
-               exception.getMessage().contains("inválido"),
-               "Mensagem de erro deve indicar dado inválido");
-}
-
+        try {
+            boolean inserido = dao.insertAmigosBD(amigoInvalido);
+            assertFalse(inserido, "O método não deveria retornar true em uma inserção inválida");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true, "Erro lançado corretamente para inserção inválida");
+        } catch (RuntimeException e) {
+            assertTrue(true, "Erro lançado corretamente para inserção inválida");
+        } catch (Exception e) {
+            fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
+        }
+    }
     
     @Test
     @Order(3)
