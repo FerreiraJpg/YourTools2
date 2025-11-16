@@ -6,27 +6,32 @@ import dao.YourToolsDAO;
 import org.junit.jupiter.api.AfterEach;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class AmigosTest {
 
     private YourToolsDAO dao;
     private Amigos amigos;
     private int testAmigoId;
+    
+    private static Stream<Object[]> invalidInsertParameters() {
+        return Stream.of(
+                new Object[]{"", 111222333, "Nome vazio deve falhar"},
+                new Object[]{null, 111222333, "Nome nulo deve falhar"},
+                new Object[]{"Amigo Telefone Zero", 0, "Telefone zero deve falhar"},
+                new Object[]{"Amigo Telefone negativo", -451, "Telefone negativo deve falhar"}
+        );
+    }
 
     @BeforeEach
     void setUp() throws SQLException {
         dao = new YourToolsDAO();
         amigos = new Amigos();
-        // Limpa quaisquer dados de teste anteriores para garantir um estado limpo para cada teste.
-        // Esta é uma abordagem simplificada; em um cenário real, você pode usar transações
-        // ou uma configuração/desmontagem de banco de dados de teste dedicada.
-        // Por enquanto, vamos apenas tentar excluir um amigo de teste conhecido, se ele existir.
-        // Uma solução mais robusta envolveria inserir um amigo de teste específico e
-        // armazenar seu ID para limpeza.
-        
-        // Insere um amigo de teste para operações CRUD gerais e armazena seu ID
         String initialTestName = "Amigo de Teste Inicial " + System.currentTimeMillis();
         int initialTestPhone = 100000000;
         amigos.insertAmigosBD(initialTestName, initialTestPhone);
@@ -119,43 +124,18 @@ class AmigosTest {
         // Limpa este amigo específico
         amigos.deleteAmigosBD(newId);
     }
+    
+    @ParameterizedTest
+    @MethodSource("invalidInsertParameters")
+    @DisplayName("Testes parametrizados - inserção inválida de amigos")
+    void testInsertAmigosBD_InvalidInputs(String name, int phone, String message) throws SQLException {
+        Amigos amigos = new Amigos();
 
-    @Test
-    void testInsertAmigosBD_EmptyName() throws SQLException {
-        String testName = ""; // Nome vazio
-        int testPhone = 111222333;
+        boolean result = amigos.insertAmigosBD(name, phone);
 
-        boolean result = amigos.insertAmigosBD(testName, testPhone);
-        assertFalse(result, "A inserção de amigo com nome vazio deveria falhar.");
-    }
-
-    @Test
-    void testInsertAmigosBD_NullName() throws SQLException {
-        String testName = null; // Nome nulo
-        int testPhone = 111222333;
-
-        boolean result = amigos.insertAmigosBD(testName, testPhone);
-        assertFalse(result, "A inserção de amigo com nome nulo deveria falhar.");
-    }
-
-    @Test
-    void testInsertAmigosBD_ZeroPhoneNumber() throws SQLException {
-        String testName = "Amigo de Teste Telefone Zero";
-        int testPhone = 0;
-
-        boolean result = amigos.insertAmigosBD(testName, testPhone);
-        assertFalse(result, "A inserção de amigo com telefone zero deveria falhar.");
-    }
-
-    @Test
-    void testInsertAmigosBD_NegativePhoneNumber() throws SQLException {
-        String testName = "Amigo de Teste Telefone " + System.currentTimeMillis();
-        int testPhone = -12345; // Número de telefone negativo
-
-        boolean result = amigos.insertAmigosBD(testName, testPhone);
-        assertFalse(result, "A inserção de amigo com número de telefone negativo deveria falhar.");
-    }
-
+        assertFalse(result, message);
+    }    
+    
     @Test
     void testDeleteAmigosBD() throws SQLException {
         // Insere um novo amigo especificamente para este teste de exclusão
