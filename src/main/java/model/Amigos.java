@@ -1,7 +1,6 @@
 package model;
 
 import dao.YourToolsDAO;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Amigos extends Pessoa {
@@ -36,7 +35,7 @@ public class Amigos extends Pessoa {
     }
 
     // Cadastra novo aluno
-    public boolean insertAmigosBD(String nome, int telefone) throws SQLException {
+    public boolean insertAmigosBD(String nome, int telefone) {
         if (nome == null || nome.trim().isEmpty() || telefone <= 0) {
             return false;
         }
@@ -69,7 +68,7 @@ public class Amigos extends Pessoa {
     }
     
     // retorna o maior ID da nossa base de dados
-        public int maiorIDAmigos() throws SQLException{
+        public int maiorIDAmigos() {
         return dao.maiorIDAmigos();
     }   
 }
