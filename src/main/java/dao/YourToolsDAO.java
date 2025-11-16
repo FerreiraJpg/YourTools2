@@ -10,11 +10,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class YourToolsDAO {
 
     public static ArrayList<Amigos> MinhaLista = new ArrayList<>();
     public static ArrayList<Ferramentas> MinhaListaFerramentas = new ArrayList<>();
+    Logger logger = Logger.getLogger(getClass().getName());
+
 
     public YourToolsDAO() {
         criarTabelas();
@@ -60,10 +64,11 @@ public class YourToolsDAO {
 
             stmt.execute(sqlAmigos);
             stmt.execute(sqlFerramentas);
-            System.out.println("Tabelas verificadas/criadas com sucesso no SQLite.");
+            logger.info("Tabelas verificadas/criadas com sucesso no SQLite.");
 
         } catch (SQLException e) {
-            System.err.println("Erro ao criar tabelas no SQLite: " + e.getMessage());
+            logger.log(Level.SEVERE, "Erro ao criar tabelas no SQLite", e);
+
         }
     }
 
