@@ -160,8 +160,6 @@ public class CadastroAmigos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         } catch (NumberFormatException erro2) {
             JOptionPane.showMessageDialog(null, "Informe um n�mero.");
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastroAmigos.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_btn_cadastrarActionPerformed

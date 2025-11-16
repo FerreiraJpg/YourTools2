@@ -1,7 +1,6 @@
 package model;
 
 import dao.YourToolsDAO;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Ferramentas {
@@ -87,7 +86,7 @@ public class Ferramentas {
     }
 
     // Cadastra nova Ferramentas
-    public boolean insertFerramentasBD(String nome, String marca, double custoAquisicao) throws SQLException {
+    public boolean insertFerramentasBD(String nome, String marca, double custoAquisicao) {
         int novoid = this.maiorIDFerramentas() + 1;
         Ferramentas objeto = new Ferramentas(novoid, nome, marca, custoAquisicao);
         dao.insertFerramentasBD(objeto);
