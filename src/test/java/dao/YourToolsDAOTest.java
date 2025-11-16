@@ -196,6 +196,10 @@ public class YourToolsDAOTest {
 
             @Override
             public void criarTabelas() {
+                /* * Sobrescrevemos este método para evitar que o construtor do DAO
+     * tente criar tabelas reais no banco de dados com a conexão mock, 
+     * garantindo o isolamento deste teste.
+                 */
             }
         };
         when(mockConnection.createStatement()).thenThrow(new SQLException("Falha de conexão forçada para teste de catch."));
