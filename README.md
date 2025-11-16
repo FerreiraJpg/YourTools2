@@ -9,6 +9,8 @@
 
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=FerreiraJpg_YourTools2&metric=coverage)](https://sonarcloud.io/summary/new_code?id=FerreiraJpg_YourTools2)
 
+[![Integração continua de Java com Maven](https://github.com/FerreiraJpg/YourTools2/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/FerreiraJpg/YourTools2/actions/workflows/maven.yml)
+
 Trabalho do primeiro semestre da faculdade.
 ### 🧩 Grupo do Projeto Original
 
@@ -54,6 +56,7 @@ CREATE TABLE tb_ferramentas (
 );
 
 Essa a base do banco que você precisa copiar no MySQL
+
 
 
 
