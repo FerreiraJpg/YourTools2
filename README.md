@@ -1,5 +1,4 @@
 # YourTools
-[![Qodana](https://github.com/FerreiraJpg/YourTools2/actions/workflows/code_quality.yml/badge.svg)](https://github.com/FerreiraJpg/YourTools2/actions/workflows/code_quality.yml)'
 
 [//]: # ([![Quality Gate Status]&#40;https://sonarcloud.io/api/project_badges/measure?project=FerreiraJpg_YourTools2&metric=alert_status&#41;]&#40;https://sonarcloud.io/summary/new_code?id=FerreiraJpg_YourTools2&#41;)
 
@@ -33,6 +32,7 @@ Trabalho do primeiro semestre da faculdade.
 | Iago Alexandre Marcaccini Panho | 1072312987 | [@Iag18](https://github.com/Iag18) |
 | Pedro Inacio Pinheiro Alcantara Dias | 10725215730 | [@opedroalcantara](https://github.com/opedroalcantara) |
 | Clara Emidio Corrêa | 10722129245 | [@ClaraCorrea](https://github.com/ClaraCorrea) |
+
 
 
 
