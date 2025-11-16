@@ -8,10 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import java.sql.Connection;
-import java.sql.Statement;
 import java.sql.SQLException;
-
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
