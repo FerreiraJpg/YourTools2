@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import dao.YourToolsDAO;
 import java.sql.SQLException;
