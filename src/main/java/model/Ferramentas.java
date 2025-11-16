@@ -81,7 +81,7 @@ public class Ferramentas {
      */
 
     // Retorna a Lista de Ferramentas(objetos)
-    public ArrayList getMinhaListaFerramentas() {
+    public ArrayList<Ferramentas> getMinhaListaFerramentas() {
         return dao.getMinhaListaFerramentas();
     }
 
