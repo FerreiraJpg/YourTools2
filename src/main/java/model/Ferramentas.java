@@ -17,6 +17,11 @@ public class Ferramentas {
     public Ferramentas() {
         this.dao = new YourToolsDAO(); // inicializado não importa em qual construtor
     }
+    
+    //Constructor para testes
+    public Ferramentas(YourToolsDAO dao) {
+        this.dao = dao;
+    }
 
     // Método Construtor usando também o construtor da SUPERCLASSE
     public Ferramentas(int id, String nome, String marca, double custoAquisicao) {

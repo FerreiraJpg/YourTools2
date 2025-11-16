@@ -3,24 +3,29 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import dao.YourToolsDAO;
 
 import java.sql.SQLException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class FerramentasTest {
 
     private Ferramentas ferramentas;
     private int testToolId;
+    
+    @Mock
+    private YourToolsDAO daoMock;
 
     @BeforeEach
     void setUp() throws SQLException {
+        MockitoAnnotations.openMocks(this);
+        
         ferramentas = new Ferramentas();
-        // Insere uma ferramenta de teste para operações CRUD gerais e armazena seu ID
         String initialTestName = "Ferramenta de Teste " + System.currentTimeMillis();
         String initialTestBrand = "Marca Teste";
         double initialTestCost = 100.0;
@@ -30,15 +35,43 @@ class FerramentasTest {
 
     @AfterEach
     void tearDown() {
-        // Limpa a ferramenta de teste criada no setUp
         try {
             ferramentas.deleteFerramentasBD(testToolId);
         } catch (Exception e) {
-            System.err.println("Erro durante o tearDown do teste: - FerramentasTest.java:37" + e.getMessage());
+            System.err.println("Erro durante o tearDown do teste: - FerramentasTest.java:41" + e.getMessage());
         }
     }
 
-    // Testes de Unidade para a classe Ferramentas
+    // ✅ TESTE UNITÁRIO PARA O MÉTODO getMinhaListaFerramentas()
+    @Test
+    void testGetMinhaListaFerramentasUnitario() {
+        // Arrange - Cria uma ferramenta com DAO mockado
+        Ferramentas ferramentaComMock = new Ferramentas(daoMock);
+        
+        // Cria lista esperada
+        ArrayList<Ferramentas> listaEsperada = new ArrayList<>();
+        listaEsperada.add(new Ferramentas(1, "Martelo", "Tramontina", 50.0));
+        listaEsperada.add(new Ferramentas(2, "Chave de Fenda", "Stanley", 30.0));
+        
+        // Configura o mock para retornar a lista quando chamado
+        when(daoMock.getMinhaListaFerramentas()).thenReturn(listaEsperada);
+        
+        // Act - Chama o método que queremos testar
+        ArrayList<Ferramentas> resultado = ferramentaComMock.getMinhaListaFerramentas();
+        
+        // Assert - Verifica se funcionou corretamente
+        assertNotNull(resultado, "A lista não deve ser nula");
+        assertEquals(2, resultado.size(), "Deve retornar 2 ferramentas");
+        assertEquals("Martelo", resultado.get(0).getNome());
+        assertEquals("Chave de Fenda", resultado.get(1).getNome());
+        assertEquals(50.0, resultado.get(0).getCustoAquisicao());
+        assertEquals(30.0, resultado.get(1).getCustoAquisicao());
+        
+        // Verifica que o método do DAO foi chamado exatamente 1 vez
+        verify(daoMock, times(1)).getMinhaListaFerramentas();
+    }
+
+    // Seus outros testes continuam aqui...
     @Test
     void testFerramentasEmptyConstructor() {
         Ferramentas newFerramenta = new Ferramentas();
@@ -91,5 +124,4 @@ class FerramentasTest {
         assertEquals("Marca Setter", newFerramenta.getMarca());
         assertEquals(250.75, newFerramenta.getCustoAquisicao());
     }
-
 }
