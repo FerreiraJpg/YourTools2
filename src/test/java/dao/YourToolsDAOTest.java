@@ -1,7 +1,6 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import model.Amigos;
 import model.Ferramentas;
 import java.util.ArrayList;
