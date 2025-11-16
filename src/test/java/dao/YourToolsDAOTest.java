@@ -20,19 +20,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class YourToolsDAOTest {
+class YourToolsDAOTest {
 
     private YourToolsDAO dao;
     private static final int ID_AMIGO_TESTE = 9999;
     private static final int ID_FERRAMENTA_TESTE = 8888;
 
     @BeforeEach
-    public void setup() {
+   void setup() {
         dao = new YourToolsDAO();
     }
 
     @AfterAll
-    public static void cleanUpAll() {
+    static void cleanUpAll() {
         YourToolsDAO cleanupDao = new YourToolsDAO();
         cleanupDao.deleteAmigosBD(ID_AMIGO_TESTE);
         cleanupDao.deleteFerramentasBD(ID_FERRAMENTA_TESTE);
@@ -40,7 +40,7 @@ public class YourToolsDAOTest {
 
     @Test
     @Order(1)
-    public void testGetConexao_Sucesso() {
+    void testGetConexao_Sucesso() {
         assertDoesNotThrow(() -> {
             dao.getConexao().close();
         }, "A conexão com o banco de dados SQLite deve ser bem-sucedida.");
@@ -48,7 +48,7 @@ public class YourToolsDAOTest {
 
     @Test
     @Order(2)
-    public void testMaiorIDAmigos_Sucesso() {
+    void testMaiorIDAmigos_Sucesso() {
         assertDoesNotThrow(() -> {
             int maiorID = dao.maiorIDAmigos();
             assertTrue(maiorID >= 0, "O maior ID deve ser não-negativo.");
@@ -57,7 +57,7 @@ public class YourToolsDAOTest {
 
     @Test
     @Order(3)
-    public void testInsertAmigosBD_Sucesso() {
+    void testInsertAmigosBD_Sucesso() {
         Amigos amigo = new Amigos(ID_AMIGO_TESTE, "Amigo SQLite", 11223344);
 
         assertTrue(dao.insertAmigosBD(amigo), "A inserção do amigo deve retornar true.");
@@ -65,7 +65,7 @@ public class YourToolsDAOTest {
 
     @Test
     @Order(4)
-    public void testCarregaAmigos_Existente() {
+     void testCarregaAmigos_Existente() {
         Amigos amigoCarregado = dao.carregaAmigos(ID_AMIGO_TESTE);
 
         assertNotNull(amigoCarregado, "O amigo deve ser carregado (não nulo).");
@@ -75,7 +75,7 @@ public class YourToolsDAOTest {
 
     @Test
     @Order(5)
-    public void testUpdateAmigosBD_Sucesso() {
+     void testUpdateAmigosBD_Sucesso() {
         Amigos amigoUpdate = new Amigos(ID_AMIGO_TESTE, "Nome Atualizado SQLite", 99887766);
 
         assertTrue(dao.updateAmigosBD(amigoUpdate), "A atualização do amigo deve retornar true.");
@@ -87,7 +87,7 @@ public class YourToolsDAOTest {
 
     @Test
     @Order(6)
-    public void testDeleteAmigosBD_Sucesso() {
+    void testDeleteAmigosBD_Sucesso() {
         assertTrue(dao.deleteAmigosBD(ID_AMIGO_TESTE), "A exclusão do amigo deve retornar true.");
 
         assertNull(dao.carregaAmigos(ID_AMIGO_TESTE), "O amigo excluído não deve ser mais encontrado.");
@@ -95,7 +95,7 @@ public class YourToolsDAOTest {
 
     @Test
     @Order(7)
-    public void testMaiorIDFerramentas_Sucesso() {
+     void testMaiorIDFerramentas_Sucesso() {
         assertDoesNotThrow(() -> {
             int maiorID = dao.maiorIDFerramentas();
             assertTrue(maiorID >= 0, "O maior ID deve ser não-negativo.");
@@ -104,7 +104,7 @@ public class YourToolsDAOTest {
 
     @Test
     @Order(8)
-    public void testInsertFerramentasBD_Sucesso() {
+    void testInsertFerramentasBD_Sucesso() {
         Ferramentas ferramenta = new Ferramentas(ID_FERRAMENTA_TESTE, "Chave de Fenda", "Marca Teste", 25.50);
 
         assertTrue(dao.insertFerramentasBD(ferramenta), "A inserção da ferramenta deve retornar true.");
@@ -112,7 +112,7 @@ public class YourToolsDAOTest {
 
     @Test
     @Order(9)
-    public void testCarregaFerramentas_Existente() {
+   void testCarregaFerramentas_Existente() {
         Ferramentas ferramentaCarregada = dao.carregaFerramentas(ID_FERRAMENTA_TESTE);
 
         assertNotNull(ferramentaCarregada, "A ferramenta deve ser carregada (não nula).");
@@ -122,7 +122,7 @@ public class YourToolsDAOTest {
 
     @Test
     @Order(10)
-    public void testDeleteFerramentasBD_Sucesso() {
+    void testDeleteFerramentasBD_Sucesso() {
         assertTrue(dao.deleteFerramentasBD(ID_FERRAMENTA_TESTE), "A exclusão da ferramenta deve retornar true.");
 
         ArrayList<Ferramentas> lista = dao.getMinhaListaFerramentas();
@@ -132,7 +132,7 @@ public class YourToolsDAOTest {
 
     @Test
     @Order(11)
-    public void testGetMinhaListaAmigos_Vazia() {
+    void testGetMinhaListaAmigos_Vazia() {
         List<Amigos> todosAmigos = dao.getMinhaListaAmigos();
         for (Amigos a : todosAmigos) {
             dao.deleteAmigosBD(a.getId());
@@ -146,7 +146,7 @@ public class YourToolsDAOTest {
 
     @Test
     @Order(12)
-    public void testGetMinhaListaFerramentas_Vazia() {
+     void testGetMinhaListaFerramentas_Vazia() {
 
         List<Ferramentas> todosFerramentas = dao.getMinhaListaFerramentas();
         for (Ferramentas a : todosFerramentas) {
@@ -185,7 +185,7 @@ public class YourToolsDAOTest {
 
     @Test
     @Order(45)
-    public void testGetMinhaListaAmigos_FalhaSQL_CobreCatch() throws SQLException {
+     void testGetMinhaListaAmigos_FalhaSQL_CobreCatch() throws SQLException {
 
         Connection mockConnection = mock(Connection.class);
         YourToolsDAO daoFalha = new YourToolsDAO() {
