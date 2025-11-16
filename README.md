@@ -5,6 +5,10 @@
 
 [//]: # ([![Coverage]&#40;https://sonarcloud.io/api/project_badges/measure?project=FerreiraJpg_YourTools2&metric=coverage&#41;]&#40;https://sonarcloud.io/summary/new_code?id=FerreiraJpg_YourTools2&#41;)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=FerreiraJpg_YourTools2&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=FerreiraJpg_YourTools2)
+
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=FerreiraJpg_YourTools2&metric=coverage)](https://sonarcloud.io/summary/new_code?id=FerreiraJpg_YourTools2)
+
 Trabalho do primeiro semestre da faculdade.
 ### 🧩 Grupo do Projeto Original
 
@@ -50,6 +54,7 @@ CREATE TABLE tb_ferramentas (
 );
 
 Essa a base do banco que você precisa copiar no MySQL
+
 
 
 
