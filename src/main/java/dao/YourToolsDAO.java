@@ -109,7 +109,7 @@ public class YourToolsDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao listar amigos: " + e.getMessage());
+            logger.log(Level.SEVERE, "Erro ao listar amigos: ", e);
         }
         return MinhaLista;
     }
@@ -143,8 +143,7 @@ public class YourToolsDAO {
             return linhasAfetadas > 0;
 
         } catch (SQLException e) {
-            System.err.println("Erro ao deletar amigo: " + e.getMessage());
-            return false;
+            throw new IllegalArgumentException("Erro ao deletar amigo:", e);
         }
     }
 
@@ -183,7 +182,7 @@ public class YourToolsDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao carregar amigo: " + e.getMessage());
+            throw new IllegalArgumentException("Erro ao carregar amigo:", e);
         }
 
         return null;
@@ -226,7 +225,7 @@ public class YourToolsDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao listar ferramentas: " + e.getMessage());
+            logger.log(Level.SEVERE, "Erro ao listar ferramentas: ", e);
         }
         return MinhaListaFerramentas;
     }
