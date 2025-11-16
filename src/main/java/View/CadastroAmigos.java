@@ -4,7 +4,7 @@
  */
 package View;
 
-import Model.Amigos;
+import model.Amigos;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
