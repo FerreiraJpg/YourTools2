@@ -11,14 +11,14 @@ public class Ferramentas {
     private String nome;
     private String marca;
     private double custoAquisicao;
-    private final YourToolsDAO dao; 
+    private final YourToolsDAO dao;
 
     // Método Construtor de Objeto Vazio
     public Ferramentas() {
         this.dao = new YourToolsDAO(); // inicializado não importa em qual construtor
     }
-    
-    //Constructor para testes
+
+    // Constructor para testes
     public Ferramentas(YourToolsDAO dao) {
         this.dao = dao;
     }
@@ -63,10 +63,9 @@ public class Ferramentas {
     public void setCustoAquisicao(double custoAquisicao) {
         this.custoAquisicao = custoAquisicao;
     }
-    
-    
 
-    // Override necessário para poder retornar os dados de Pessoa no toString para aluno.
+    // Override necessário para poder retornar os dados de Pessoa no toString para
+    // aluno.
     @Override
     public String toString() {
         return "\n ID: " + this.getId()
@@ -77,11 +76,11 @@ public class Ferramentas {
     }
 
     /*
-        ABAIXO OS MÉTODOS PARA USO JUNTO COM O DAO
-        SIMULANDO A ESTRUTURA EM CAMADAS PARA USAR COM BANCOS DE DADOS.
-    
+     * ABAIXO OS MÉTODOS PARA USO JUNTO COM O DAO
+     * SIMULANDO A ESTRUTURA EM CAMADAS PARA USAR COM BANCOS DE DADOS.
+     * 
      */
-    
+
     // Retorna a Lista de Ferramentas(objetos)
     public ArrayList getMinhaListaFerramentas() {
         return dao.getMinhaListaFerramentas();
@@ -111,13 +110,12 @@ public class Ferramentas {
 
     // carrega dados de um aluno específico pelo seu ID
     public Ferramentas carregaFerramentas(int id) {
-        dao.carregaFerramentas(id);
-        return null;
+        return dao.carregaFerramentas(id); //Retorna o resultado do DAO
+    }
+
+    // retorna o maior ID da nossa base de dados
+    public int maiorIDFerramentas() {
+        return dao.maiorIDFerramentas();
     }
     
-    // retorna o maior ID da nossa base de dados
-        public int maiorIDFerramentas(){
-        return dao.maiorIDFerramentas();
-    }   
 }
-
