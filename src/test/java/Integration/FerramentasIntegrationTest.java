@@ -43,7 +43,7 @@ public class FerramentasIntegrationTest {
     @Test
     @Order(1)
     void testInsertFerramenta() {
-    boolean inserido = dao.InsertFerramentasBD(ferramentaValida);
+    boolean inserido = dao.insertFerramentasBD(ferramentaValida);
     assertTrue(inserido, "A ferramenta deve ser inserida com sucesso");
     }
     
@@ -51,7 +51,7 @@ public class FerramentasIntegrationTest {
     @Order(2)
     void testInsertFerramentaIncorreta() {
         try {
-            boolean inserido = dao.InsertFerramentasBD(ferramentaNomeInvalido);
+            boolean inserido = dao.insertFerramentasBD(ferramentaNomeInvalido);
             assertFalse(inserido, "O método não deveria retornar true em uma inserção inválida");
         } catch (IllegalArgumentException e) {
             assertTrue(true, "Erro lançado corretamente para inserção inválida");
@@ -65,26 +65,26 @@ public class FerramentasIntegrationTest {
     @Test
     @Order(3)
     void testAtualizarFerramenta() {
-        dao.InsertFerramentasBD(ferramentaValida);
+        dao.insertFerramentasBD(ferramentaValida);
         
         ferramentaValida.setNome("Ferramenta Atualizada");
         ferramentaValida.setMarca("Marca Atualizada");
         ferramentaValida.setCustoAquisicao(25);
-        dao.UpdateFerramentasBD(ferramentaValida);
+        dao.updateFerramentasBD(ferramentaValida);
         
         Ferramentas ferramentaBanco = dao.carregaFerramentas(ferramentaValida.getId());
 
         assertNotNull(ferramentaBanco, "a ferramenta atualizada deve existir no banco");
         assertEquals("Ferramenta Atualizada", ferramentaBanco.getNome(), "O nome do produto deve ter sido atualizado corretamente");
-        dao.DeleteFerramentasBD(ferramentaValida.getId());
+        dao.deleteFerramentasBD(ferramentaValida.getId());
     }
 
     @Test
     @Order(4)
     void testExcluirFerramentaValida() {
-        dao.InsertFerramentasBD(ferramentaValida);
+        dao.insertFerramentasBD(ferramentaValida);
         int ferramentaValidaID = ferramentaValida.getId();
-        boolean deletada = dao.DeleteFerramentasBD(ferramentaValidaID);
+        boolean deletada = dao.deleteFerramentasBD(ferramentaValidaID);
         assertTrue(deletada, "A ferramenta deve ser excluída com sucesso");
     }
     
@@ -95,7 +95,7 @@ public class FerramentasIntegrationTest {
 
         try
         {
-            boolean deletada = dao.DeleteFerramentasBD(idInvalido);
+            boolean deletada = dao.deleteFerramentasBD(idInvalido);
             assertFalse(deletada, "Não deve excluir caso não haja um ID válido");
         } catch (IllegalArgumentException e) {
             assertTrue(true, "Erro lançado corretamente para inserção inválida");
@@ -107,11 +107,11 @@ public class FerramentasIntegrationTest {
     @Test
     @Order(6)
     void testListarFerramentas() {
-        dao.InsertFerramentasBD(ferramentaValida);
+        dao.insertFerramentasBD(ferramentaValida);
         List<Ferramentas> lista = dao.getMinhaListaFerramentas();
         assertNotNull(lista);
         assertFalse(lista.isEmpty(), "A lista de ferramentas deve conter ao menos um registro");
-        dao.DeleteFerramentasBD(ferramentaValida.getId());
+        dao.deleteFerramentasBD(ferramentaValida.getId());
     }
     
     @Test
@@ -119,7 +119,7 @@ public class FerramentasIntegrationTest {
     void testListarFerramentasVazia() {
         List<Ferramentas> todosFerramentas = dao.getMinhaListaFerramentas();
         for (Ferramentas a : todosFerramentas) {
-            dao.DeleteFerramentasBD(a.getId());
+            dao.deleteFerramentasBD(a.getId());
         }
         List<Ferramentas> lista = dao.getMinhaListaFerramentas();
         assertNotNull(lista);
@@ -132,7 +132,7 @@ public class FerramentasIntegrationTest {
         YourToolsDAO daoErro = new YourToolsDAO();
         daoErro.getConexao().close();
 
-        boolean resultado = daoErro.DeleteFerramentasBD(1);
+        boolean resultado = daoErro.deleteFerramentasBD(1);
         assertFalse(resultado, "Quando ocorrer SQLException, o método deve retornar false");
     }
 
@@ -140,7 +140,7 @@ public class FerramentasIntegrationTest {
     @Order(9)
     void testInsertFerramentasMarcaInvalida() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            dao.InsertFerramentasBD(ferramentaMarcaInvalida);
+            dao.insertFerramentasBD(ferramentaMarcaInvalida);
         });
 
         assertEquals("Marca não pode ser nulo/vazio", exception.getMessage());
@@ -150,7 +150,7 @@ public class FerramentasIntegrationTest {
     @Order(10)
     void testInsertFerramentasPrecoInvalido() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            dao.InsertFerramentasBD(ferramentaPrecoInvalido);
+            dao.insertFerramentasBD(ferramentaPrecoInvalido);
         });
 
         assertEquals("Preço não pode ser nulo/vazio", exception.getMessage());
@@ -159,50 +159,50 @@ public class FerramentasIntegrationTest {
     @Test
     @Order(11)
     void testAtualizarFerramentaNomeInvalido() {
-        dao.InsertFerramentasBD(ferramentaValida);
+        dao.insertFerramentasBD(ferramentaValida);
         
         ferramentaValida.setNome(null);
         
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            dao.UpdateFerramentasBD(ferramentaValida);
+            dao.updateFerramentasBD(ferramentaValida);
         });
 
-        dao.DeleteFerramentasBD(ferramentaValida.getId());
+        dao.deleteFerramentasBD(ferramentaValida.getId());
     }
     
     @Test
     @Order(12)
     void testAtualizarFerramentaMarcaInvalido() {
-        dao.InsertFerramentasBD(ferramentaValida);
+        dao.insertFerramentasBD(ferramentaValida);
         
         ferramentaValida.setMarca(null);
         
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            dao.UpdateFerramentasBD(ferramentaValida);
+            dao.updateFerramentasBD(ferramentaValida);
         });
 
-        dao.DeleteFerramentasBD(ferramentaValida.getId());
+        dao.deleteFerramentasBD(ferramentaValida.getId());
     }
     
     @Test
     @Order(13)
     void testAtualizarFerramentaPrecoInvalido() {
-        dao.InsertFerramentasBD(ferramentaValida);
+        dao.insertFerramentasBD(ferramentaValida);
         
         ferramentaValida.setCustoAquisicao(0);
         
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            dao.UpdateFerramentasBD(ferramentaValida);
+            dao.updateFerramentasBD(ferramentaValida);
         });
 
-        dao.DeleteFerramentasBD(ferramentaValida.getId());
+        dao.deleteFerramentasBD(ferramentaValida.getId());
     }
 
     
     @AfterEach
     void limparBanco() {
-        dao.DeleteFerramentasBD(ferramentaValida.getId());
-        dao.DeleteFerramentasBD(ferramentaNomeInvalido.getId());
+        dao.deleteFerramentasBD(ferramentaValida.getId());
+        dao.deleteFerramentasBD(ferramentaNomeInvalido.getId());
     }
     
 }

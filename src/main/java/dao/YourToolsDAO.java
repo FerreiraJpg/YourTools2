@@ -109,7 +109,7 @@ public class YourToolsDAO {
         return MinhaLista;
     }
 
-    public boolean InsertAmigosBD(Amigos objeto) {
+    public boolean insertAmigosBD(Amigos objeto) {
         String sql = "INSERT INTO tb_amigos(id,nome,telefone) VALUES(?,?,?)";
 
         try (Connection conn = getConexao();
@@ -126,7 +126,7 @@ public class YourToolsDAO {
         }
     }
             
-    public boolean DeleteAmigosBD(int id) {
+    public boolean deleteAmigosBD(int id) {
         String sql = "DELETE FROM tb_amigos WHERE id = ?";
 
         try (Connection conn = getConexao();
@@ -143,7 +143,7 @@ public class YourToolsDAO {
         }
     }
 
-    public boolean UpdateAmigosBD(Amigos objeto) {
+    public boolean updateAmigosBD(Amigos objeto) {
         String sql = "UPDATE tb_amigos SET nome = ?, telefone = ? WHERE id = ?";
 
         try (Connection conn = getConexao();
@@ -226,7 +226,7 @@ public class YourToolsDAO {
         return MinhaListaFerramentas;
     }
 
-    public boolean InsertFerramentasBD(Ferramentas obj) {
+    public boolean insertFerramentasBD(Ferramentas obj) {
         String sql = "INSERT INTO tb_ferramentas(id,nome,marca,custoAquisicao) VALUES(?,?,?,?)";
 
         if (obj.getNome()== null || obj.getNome().trim().isEmpty()) {
@@ -256,7 +256,7 @@ public class YourToolsDAO {
         }
     }
 
-    public boolean DeleteFerramentasBD(int id) {
+    public boolean deleteFerramentasBD(int id) {
         String sql = "DELETE FROM tb_ferramentas WHERE id = ?";
 
         try (Connection conn = getConexao();
@@ -272,7 +272,7 @@ public class YourToolsDAO {
         }
     }
 
-    public boolean UpdateFerramentasBD(Ferramentas obj) {
+    public boolean updateFerramentasBD(Ferramentas obj) {
         String sql = "UPDATE tb_ferramentas SET nome = ?, marca = ?, custoAquisicao = ? WHERE id = ?";
         
         if (obj.getNome()== null || obj.getNome().trim().isEmpty()) {

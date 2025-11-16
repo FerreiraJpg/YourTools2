@@ -27,8 +27,8 @@ public class YourToolsDAOTest {
     @AfterAll
     public static void cleanUpAll() {
         YourToolsDAO cleanupDao = new YourToolsDAO();
-        cleanupDao.DeleteAmigosBD(ID_AMIGO_TESTE);
-        cleanupDao.DeleteFerramentasBD(ID_FERRAMENTA_TESTE);
+        cleanupDao.deleteAmigosBD(ID_AMIGO_TESTE);
+        cleanupDao.deleteFerramentasBD(ID_FERRAMENTA_TESTE);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class YourToolsDAOTest {
     public void testInsertAmigosBD_Sucesso() {
         Amigos amigo = new Amigos(ID_AMIGO_TESTE, "Amigo SQLite", 11223344);
 
-        assertTrue(dao.InsertAmigosBD(amigo), "A inserção do amigo deve retornar true.");
+        assertTrue(dao.insertAmigosBD(amigo), "A inserção do amigo deve retornar true.");
     }
 
     @Test
@@ -71,7 +71,7 @@ public class YourToolsDAOTest {
     public void testUpdateAmigosBD_Sucesso() {
         Amigos amigoUpdate = new Amigos(ID_AMIGO_TESTE, "Nome Atualizado SQLite", 99887766);
 
-        assertTrue(dao.UpdateAmigosBD(amigoUpdate), "A atualização do amigo deve retornar true.");
+        assertTrue(dao.updateAmigosBD(amigoUpdate), "A atualização do amigo deve retornar true.");
 
         Amigos amigoVerificado = dao.carregaAmigos(ID_AMIGO_TESTE);
         assertEquals("Nome Atualizado SQLite", amigoVerificado.getNome(), "O nome deve ser atualizado.");
@@ -81,7 +81,7 @@ public class YourToolsDAOTest {
     @Test
     @Order(6)
     public void testDeleteAmigosBD_Sucesso() {
-        assertTrue(dao.DeleteAmigosBD(ID_AMIGO_TESTE), "A exclusão do amigo deve retornar true.");
+        assertTrue(dao.deleteAmigosBD(ID_AMIGO_TESTE), "A exclusão do amigo deve retornar true.");
 
         assertNull(dao.carregaAmigos(ID_AMIGO_TESTE), "O amigo excluído não deve ser mais encontrado.");
     }
@@ -100,7 +100,7 @@ public class YourToolsDAOTest {
     public void testInsertFerramentasBD_Sucesso() {
         Ferramentas ferramenta = new Ferramentas(ID_FERRAMENTA_TESTE, "Chave de Fenda", "Marca Teste", 25.50);
 
-        assertTrue(dao.InsertFerramentasBD(ferramenta), "A inserção da ferramenta deve retornar true.");
+        assertTrue(dao.insertFerramentasBD(ferramenta), "A inserção da ferramenta deve retornar true.");
     }
 
     @Test
@@ -116,7 +116,7 @@ public class YourToolsDAOTest {
     @Test
     @Order(10)
     public void testDeleteFerramentasBD_Sucesso() {
-        assertTrue(dao.DeleteFerramentasBD(ID_FERRAMENTA_TESTE), "A exclusão da ferramenta deve retornar true.");
+        assertTrue(dao.deleteFerramentasBD(ID_FERRAMENTA_TESTE), "A exclusão da ferramenta deve retornar true.");
 
         ArrayList<Ferramentas> lista = dao.getMinhaListaFerramentas();
         boolean aindaExiste = lista.stream().anyMatch(f -> f.getId() == ID_FERRAMENTA_TESTE);
@@ -127,7 +127,7 @@ public class YourToolsDAOTest {
     @Order(11)
     public void testGetMinhaListaAmigos_Vazia() {
 
-        dao.DeleteAmigosBD(ID_AMIGO_TESTE);
+        dao.deleteAmigosBD(ID_AMIGO_TESTE);
 
         ArrayList<Amigos> lista = dao.getMinhaListaAmigos();
 
@@ -139,7 +139,7 @@ public class YourToolsDAOTest {
     @Order(12)
     public void testGetMinhaListaFerramentas_Vazia() {
 
-        dao.DeleteFerramentasBD(ID_FERRAMENTA_TESTE);
+        dao.deleteFerramentasBD(ID_FERRAMENTA_TESTE);
 
         ArrayList<Ferramentas> lista = dao.getMinhaListaFerramentas();
 

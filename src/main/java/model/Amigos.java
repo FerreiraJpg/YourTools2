@@ -42,7 +42,7 @@ public class Amigos extends Pessoa {
         }
         int id = this.maiorIDAmigos() + 1;
         Amigos objeto = new Amigos(id, nome, telefone);
-        dao.InsertAmigosBD(objeto);
+        dao.insertAmigosBD(objeto);
         return true;
 
     }
@@ -51,7 +51,7 @@ public class Amigos extends Pessoa {
     public boolean DeleteAmigosBD(int id) {
 //        int indice = this.procuraIndice(id);
 //        AlunoDAO.MinhaLista.remove(indice);
-        dao.DeleteAmigosBD(id);
+        dao.deleteAmigosBD(id);
         return true;
     }
 
@@ -61,7 +61,7 @@ public class Amigos extends Pessoa {
             return false;
         }
         Amigos objeto = new Amigos(id, nome, telefone);
-        dao.UpdateAmigosBD(objeto);
+        dao.updateAmigosBD(objeto);
         return true;
     }
 

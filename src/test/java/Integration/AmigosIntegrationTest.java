@@ -4,9 +4,18 @@ import dao.YourToolsDAO;
 import model.Amigos;
 import java.sql.SQLException;
 import java.util.List;
-import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AmigosIntegrationTest {
@@ -31,7 +40,7 @@ public class AmigosIntegrationTest {
     @Test
     @Order(1)
     void testInsertAmigo() {
-        boolean inserido = dao.InsertAmigosBD(amigoValido);
+        boolean inserido = dao.insertAmigosBD(amigoValido);
         assertTrue(inserido, "O amigo deve ser inserido com sucesso");
     }
 
@@ -39,7 +48,7 @@ public class AmigosIntegrationTest {
     @Order(2)
     void testInsertAmigoIncorreto() {
         try {
-            boolean inserido = dao.InsertAmigosBD(amigoInvalido);
+            boolean inserido = dao.insertAmigosBD(amigoInvalido);
             assertFalse(inserido, "O método não deveria retornar true em uma inserção inválida");
         } catch (IllegalArgumentException e) {
             assertTrue(true, "Erro lançado corretamente para inserção inválida");
@@ -53,25 +62,25 @@ public class AmigosIntegrationTest {
     @Test
     @Order(3)
     void testAtualizarAmigo() {
-        dao.InsertAmigosBD(amigoValido);
+        dao.insertAmigosBD(amigoValido);
         amigoValido.setNome("Amigo Atualizado");
-        dao.UpdateAmigosBD(amigoValido);
+        dao.updateAmigosBD(amigoValido);
 
         Amigos amigoBanco = dao.carregaAmigos(amigoValido.getId());
 
         assertNotNull(amigoBanco, "O amigo atualizado deve existir no banco");
         assertEquals("Amigo Atualizado", amigoBanco.getNome(), "O nome deve ter sido atualizado corretamente");
-        dao.DeleteAmigosBD(amigoValido.getId());
+        dao.deleteAmigosBD(amigoValido.getId());
     }
     
     @Test
     @Order(4)
     void testAtualizarAmigoDadoInvalido() {
-        dao.InsertAmigosBD(amigoValido);
+        dao.insertAmigosBD(amigoValido);
         amigoValido.setNome(null);
         
         try {
-            boolean atualizado = dao.UpdateAmigosBD(amigoValido);
+            boolean atualizado = dao.updateAmigosBD(amigoValido);
             assertFalse(atualizado, "O método não deveria retornar true em um ajuste inválido");
         } catch (IllegalArgumentException e) {
             assertTrue(true, "Erro lançado corretamente para ajuste inválido");
@@ -80,15 +89,15 @@ public class AmigosIntegrationTest {
         } catch (Exception e) {
             fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
         }
-        dao.DeleteAmigosBD(amigoValido.getId());
+        dao.deleteAmigosBD(amigoValido.getId());
     }
     
     @Test
     @Order(5)
     void testExcluirAmigo() {
-        dao.InsertAmigosBD(amigoValido);
+        dao.insertAmigosBD(amigoValido);
         int amigoValidoID = amigoValido.getId();
-        boolean deletado = dao.DeleteAmigosBD(amigoValidoID);
+        boolean deletado = dao.deleteAmigosBD(amigoValidoID);
         assertTrue(deletado, "O amigo deve ser excluído com sucesso");
     }
     
@@ -99,7 +108,7 @@ public class AmigosIntegrationTest {
 
         try
         {
-            boolean deletado = dao.DeleteAmigosBD(idInvalido);
+            boolean deletado = dao.deleteAmigosBD(idInvalido);
             assertFalse(deletado, "Não deve excluir caso não haja um ID válido");
         } catch (RuntimeException e) {
             assertTrue(true, "Erro lançado corretamente para exclusão de ID inválido");
@@ -111,11 +120,11 @@ public class AmigosIntegrationTest {
     @Test
     @Order(7)
     void testListarAmigos() {
-        dao.InsertAmigosBD(amigoValido);
+        dao.insertAmigosBD(amigoValido);
         List<Amigos> lista = dao.getMinhaListaAmigos();
         assertNotNull(lista);
         assertFalse(lista.isEmpty(), "A lista de amigos deve conter ao menos um registro");
-        dao.DeleteAmigosBD(amigoValido.getId());
+        dao.deleteAmigosBD(amigoValido.getId());
     }
     
     @Test
@@ -123,7 +132,7 @@ public class AmigosIntegrationTest {
     void testListarAmigosZerado() {
         List<Amigos> todosAmigos = dao.getMinhaListaAmigos();
         for (Amigos a : todosAmigos) {
-            dao.DeleteAmigosBD(a.getId());
+            dao.deleteAmigosBD(a.getId());
         }
         List<Amigos> lista = dao.getMinhaListaAmigos();
         assertNotNull(lista);
