@@ -92,7 +92,7 @@ public class YourToolsDAO {
 
     public ArrayList<Amigos> getMinhaListaAmigos() {
         MinhaLista.clear();
-        String sql = "SELECT * FROM tb_amigos";
+        String sql = "SELECT id, nome, telefone FROM tb_amigos";
 
         try (Connection conn = getConexao();
              Statement stmt = conn.createStatement();
@@ -165,7 +165,7 @@ public class YourToolsDAO {
     }
 
     public Amigos carregaAmigos(int id) {
-        String sql = "SELECT * FROM tb_amigos WHERE id = ?";
+        String sql = "SELECT nome, telefone FROM tb_amigos WHERE id = ?";
 
         try (Connection conn = getConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -208,7 +208,7 @@ public class YourToolsDAO {
 
     public ArrayList<Ferramentas> getMinhaListaFerramentas() {
         MinhaListaFerramentas.clear();
-        String sql = "SELECT * FROM tb_ferramentas";
+        String sql = "SELECT id, nome, marca, custoAquisicao FROM tb_ferramentas";
 
         try (Connection conn = getConexao();
              Statement stmt = conn.createStatement();
@@ -302,12 +302,12 @@ public class YourToolsDAO {
             return true;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao atualizar ferramenta!", e);
+            throw new IllegalStateException("Erro ao atualizar ferramenta!", e);
         }
     }
 
     public Ferramentas carregaFerramentas(int id) {
-        String sql = "SELECT * FROM tb_ferramentas WHERE id = ?";
+        String sql = "SELECT nome, marca, custoAquisicao FROM tb_ferramentas WHERE id = ?";
 
         try (Connection conn = getConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
