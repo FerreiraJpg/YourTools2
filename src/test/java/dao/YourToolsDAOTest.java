@@ -170,6 +170,8 @@ public class YourToolsDAOTest {
 
             @Override
             public void criarTabelas() {
+                // Método sobrescrito para testes: evita criar tabelas reais no banco durante este teste.
+                // Não é necessário implementar a lógica aqui.
             }
         };
 
