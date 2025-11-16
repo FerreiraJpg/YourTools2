@@ -89,11 +89,11 @@ jobs:
       - name: Empacota o projeto com Maven
         run: mvn -B package --file pom.xml -DskipTests
 
-      - name: Cria uma pasta temporária de downloads de artefatos
-        run: mkdir staging
+      - name: Criar pasta temporária para artefatos
+        run: mkdir -p staging
 
-      - name: Copia os artefatos a serem publicados na pasta temporária
-        run: cp target/*jar-with-dependencies.jar staging
+      - name: Copiar artefatos para a pasta temporária
+        run: cp target/*-jar-with-dependencies.jar staging/
 
       - name: Publica o artefato no GitHub Actions
         uses: actions/upload-artifact@v4
