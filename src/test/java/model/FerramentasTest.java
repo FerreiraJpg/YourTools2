@@ -24,7 +24,7 @@ class FerramentasTest {
         String initialTestName = "Ferramenta de Teste " + System.currentTimeMillis();
         String initialTestBrand = "Marca Teste";
         double initialTestCost = 100.0;
-        ferramentas.InsertFerramentasBD(initialTestName, initialTestBrand, initialTestCost);
+        ferramentas.insertFerramentasBD(initialTestName, initialTestBrand, initialTestCost);
         testToolId = ferramentas.maiorIDFerramentas();
     }
 
@@ -32,7 +32,7 @@ class FerramentasTest {
     void tearDown() {
         // Limpa a ferramenta de teste criada no setUp
         try {
-            ferramentas.DeleteFerramentasBD(testToolId);
+            ferramentas.deleteFerramentasBD(testToolId);
         } catch (Exception e) {
             System.err.println("Erro durante o tearDown do teste: - FerramentasTest.java:37" + e.getMessage());
         }

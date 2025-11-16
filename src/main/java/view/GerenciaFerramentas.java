@@ -176,7 +176,7 @@ public class GerenciaFerramentas extends javax.swing.JFrame {
             if (resposta_usuario == 0) {// clicou em SIM
 
                 // envia os dados para o Aluno processar
-                if (this.objFerramenta.DeleteFerramentasBD(id)) {
+                if (this.objFerramenta.deleteFerramentasBD(id)) {
 
                     // limpa os campos
                     this.c_nome.setText("");
@@ -231,7 +231,7 @@ public class GerenciaFerramentas extends javax.swing.JFrame {
             }
 
             // envia os dados para o Aluno processar
-            if (this.objFerramenta.UpdateFerramentasBD(id, nome, marca, custoAquisicao)) {
+            if (this.objFerramenta.updateFerramentasBD(id, nome, marca, custoAquisicao)) {
 
                 // limpa os campos
                 this.c_nome.setText("");

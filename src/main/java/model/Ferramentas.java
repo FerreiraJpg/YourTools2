@@ -83,22 +83,22 @@ public class Ferramentas {
     }
 
     // Cadastra nova Ferramentas
-    public boolean InsertFerramentasBD(String nome, String marca, double custoAquisicao) throws SQLException {
-        int id = this.maiorIDFerramentas() + 1;
-        Ferramentas objeto = new Ferramentas(id, nome, marca, custoAquisicao);
+    public boolean insertFerramentasBD(String nome, String marca, double custoAquisicao) throws SQLException {
+        int novoid = this.maiorIDFerramentas() + 1;
+        Ferramentas objeto = new Ferramentas(novoid, nome, marca, custoAquisicao);
         dao.insertFerramentasBD(objeto);
         return true;
 
     }
 
     // Deleta uma Ferramentas específico pelo seu campo ID
-    public boolean DeleteFerramentasBD(int id) {
+    public boolean deleteFerramentasBD(int id) {
         dao.deleteFerramentasBD(id);
         return true;
     }
 
     // Edita uma Ferramentas específico pelo seu campo ID
-    public boolean UpdateFerramentasBD(int id, String nome, String marca, double custoAquisicao) {
+    public boolean updateFerramentasBD(int id, String nome, String marca, double custoAquisicao) {
         Ferramentas objeto = new Ferramentas(id, nome, marca, custoAquisicao);
         dao.updateFerramentasBD(objeto);
         return true;
@@ -111,7 +111,7 @@ public class Ferramentas {
     }
     
     // retorna o maior ID da nossa base de dados
-        public int maiorIDFerramentas() throws SQLException{
+        public int maiorIDFerramentas(){
         return dao.maiorIDFerramentas();
     }   
 }

@@ -153,7 +153,7 @@ public class CadastroFerramentas extends javax.swing.JFrame {
             
 
             // envia os dados para o Controlador cadastrar
-            if (this.objFerramentas.InsertFerramentasBD(nome, marca, custoAquisicao)) {
+            if (this.objFerramentas.insertFerramentasBD(nome, marca, custoAquisicao)) {
                 JOptionPane.showMessageDialog(rootPane, "Ferramenta Cadastrado com Sucesso!");
 
                 // limpa campos da interface
