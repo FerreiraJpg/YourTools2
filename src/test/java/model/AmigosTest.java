@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import dao.YourToolsDAO;
 import org.junit.jupiter.api.AfterEach;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
@@ -29,7 +28,7 @@ class AmigosTest {
     }
 
     @BeforeEach
-    void setUp() throws SQLException {
+    void setUp()  {
         dao = new YourToolsDAO();
         amigos = new Amigos();
         String initialTestName = "Amigo de Teste Inicial " + System.currentTimeMillis();
@@ -107,7 +106,7 @@ class AmigosTest {
     }
 
     @Test
-    void testInsertAmigosBD() throws SQLException {
+    void testInsertAmigosBD()  {
         String testName = "Amigo de Teste Inserir " + System.currentTimeMillis();
         int testPhone = 111222333;
         
@@ -128,7 +127,7 @@ class AmigosTest {
     @ParameterizedTest
     @MethodSource("invalidInsertParameters")
     @DisplayName("Testes parametrizados - inserção inválida de amigos")
-    void testInsertAmigosBD_InvalidInputs(String name, int phone, String message) throws SQLException {
+    void testInsertAmigosBD_InvalidInputs(String name, int phone, String message)  {
         Amigos amigos = new Amigos();
 
         boolean result = amigos.insertAmigosBD(name, phone);
@@ -137,7 +136,7 @@ class AmigosTest {
     }    
     
     @Test
-    void testDeleteAmigosBD() throws SQLException {
+    void testDeleteAmigosBD()  {
         // Insere um novo amigo especificamente para este teste de exclusão
         String nameToDelete = "Amigo para Excluir " + System.currentTimeMillis();
         int phoneToDelete = 999888777;
@@ -161,7 +160,7 @@ class AmigosTest {
     }
 
     @Test
-    void testUpdateAmigosBD() throws SQLException {
+    void testUpdateAmigosBD()  {
         String updatedName = "Amigo Atualizado " + System.currentTimeMillis();
         int updatedPhone = 321321321;
         boolean result = amigos.updateAmigosBD(testAmigoId, updatedName, updatedPhone);
@@ -220,7 +219,7 @@ class AmigosTest {
     }
 
     @Test
-    void testCarregaAmigos() throws SQLException {
+    void testCarregaAmigos()  {
         Amigos loadedAmigo = amigos.carregaAmigos(testAmigoId);
         
         assertNotNull(loadedAmigo, "O amigo carregado não deveria ser nulo.");
@@ -236,7 +235,7 @@ class AmigosTest {
     }
 
     @Test
-    void testMaiorIDAmigos() throws SQLException {
+    void testMaiorIDAmigos()  {
         int result = amigos.maiorIDAmigos();
         assertTrue(result >= testAmigoId, "O maior ID deve ser maior ou igual ao ID do amigo de teste.");
     }
