@@ -6,6 +6,11 @@ import model.Ferramentas;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.AfterAll;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -142,7 +147,7 @@ public class YourToolsDAOTest {
     @Test
     @Order(12)
     public void testGetMinhaListaFerramentas_Vazia() {
-        
+
         List<Ferramentas> todosFerramentas = dao.getMinhaListaFerramentas();
         for (Ferramentas a : todosFerramentas) {
             dao.deleteFerramentasBD(a.getId());
@@ -153,7 +158,7 @@ public class YourToolsDAOTest {
         assertNotNull(lista, "A lista de ferramentas não deve ser nula.");
         assertTrue(lista.isEmpty(), "A lista de ferramentas deve estar vazia após a limpeza.");
     }
-    
+
     @Test
     void testGetConexaoClassNotFound() {
         YourToolsDAO conn = new YourToolsDAO() {
@@ -176,6 +181,28 @@ public class YourToolsDAOTest {
 
         Exception exception = assertThrows(IllegalStateException.class, conn::getConexao);
         assertTrue(exception.getMessage().contains("Driver SQLite não encontrado"));
+    }
+
+    @Test
+    @Order(45)
+    public void testGetMinhaListaAmigos_FalhaSQL_CobreCatch() throws SQLException {
+
+        Connection mockConnection = mock(Connection.class);
+        YourToolsDAO daoFalha = new YourToolsDAO() {
+            @Override
+            public Connection getConexao() {
+                return mockConnection;
+            }
+
+            @Override
+            public void criarTabelas() {
+            }
+        };
+        when(mockConnection.createStatement()).thenThrow(new SQLException("Falha de conexão forçada para teste de catch."));
+        assertDoesNotThrow(() -> {
+            daoFalha.getMinhaListaAmigos();
+        }, "O método deve capturar a SQLException e não propagá-la (apenas logar).");
+        assertTrue(daoFalha.getMinhaListaAmigos().isEmpty(), "A lista deve estar vazia após a falha de SQL.");
     }
 
 }
