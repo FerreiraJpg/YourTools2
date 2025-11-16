@@ -3,6 +3,7 @@ package dao;
 import model.Amigos;
 import model.Ferramentas;
 import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -126,8 +127,10 @@ public class YourToolsDAOTest {
     @Test
     @Order(11)
     public void testGetMinhaListaAmigos_Vazia() {
-
-        dao.deleteAmigosBD(ID_AMIGO_TESTE);
+        List<Amigos> todosAmigos = dao.getMinhaListaAmigos();
+        for (Amigos a : todosAmigos) {
+            dao.deleteAmigosBD(a.getId());
+        }
 
         ArrayList<Amigos> lista = dao.getMinhaListaAmigos();
 
@@ -138,8 +141,11 @@ public class YourToolsDAOTest {
     @Test
     @Order(12)
     public void testGetMinhaListaFerramentas_Vazia() {
-
-        dao.deleteFerramentasBD(ID_FERRAMENTA_TESTE);
+        
+        List<Ferramentas> todosFerramentas = dao.getMinhaListaFerramentas();
+        for (Ferramentas a : todosFerramentas) {
+            dao.deleteFerramentasBD(a.getId());
+        }
 
         ArrayList<Ferramentas> lista = dao.getMinhaListaFerramentas();
 
