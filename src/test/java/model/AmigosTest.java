@@ -3,8 +3,7 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import dao.YourToolsDAO;
-import model.Amigos;
-import org.junit.jupiter.api.AfterEach; // Importa AfterEach
+import org.junit.jupiter.api.AfterEach;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -30,7 +29,7 @@ class AmigosTest {
         // Insere um amigo de teste para operações CRUD gerais e armazena seu ID
         String initialTestName = "Amigo de Teste Inicial " + System.currentTimeMillis();
         int initialTestPhone = 100000000;
-        amigos.InsertAmigosBD(initialTestName, initialTestPhone);
+        amigos.insertAmigosBD(initialTestName, initialTestPhone);
         testAmigoId = amigos.maiorIDAmigos();
     }
 
@@ -38,7 +37,7 @@ class AmigosTest {
     void tearDown() {
         // Limpa o amigo de teste criado no setUp
         try {
-            amigos.DeleteAmigosBD(testAmigoId);
+            amigos.deleteAmigosBD(testAmigoId);
         } catch (Exception e) {
             // Registra ou trata a exceção se o amigo não puder ser excluído
             System.err.println("Erro durante o tearDown do teste: " + e.getMessage());
@@ -107,7 +106,7 @@ class AmigosTest {
         String testName = "Amigo de Teste Inserir " + System.currentTimeMillis();
         int testPhone = 111222333;
         
-        boolean result = amigos.InsertAmigosBD(testName, testPhone);
+        boolean result = amigos.insertAmigosBD(testName, testPhone);
         assertTrue(result);
 
         int newId = amigos.maiorIDAmigos();
@@ -118,7 +117,7 @@ class AmigosTest {
         assertEquals(testPhone, insertedAmigo.getTelefone());
         
         // Limpa este amigo específico
-        amigos.DeleteAmigosBD(newId);
+        amigos.deleteAmigosBD(newId);
     }
 
     @Test
@@ -126,7 +125,7 @@ class AmigosTest {
         String testName = ""; // Nome vazio
         int testPhone = 111222333;
 
-        boolean result = amigos.InsertAmigosBD(testName, testPhone);
+        boolean result = amigos.insertAmigosBD(testName, testPhone);
         assertFalse(result, "A inserção de amigo com nome vazio deveria falhar.");
     }
 
@@ -135,7 +134,7 @@ class AmigosTest {
         String testName = null; // Nome nulo
         int testPhone = 111222333;
 
-        boolean result = amigos.InsertAmigosBD(testName, testPhone);
+        boolean result = amigos.insertAmigosBD(testName, testPhone);
         assertFalse(result, "A inserção de amigo com nome nulo deveria falhar.");
     }
 
@@ -144,7 +143,7 @@ class AmigosTest {
         String testName = "Amigo de Teste Telefone Zero";
         int testPhone = 0;
 
-        boolean result = amigos.InsertAmigosBD(testName, testPhone);
+        boolean result = amigos.insertAmigosBD(testName, testPhone);
         assertFalse(result, "A inserção de amigo com telefone zero deveria falhar.");
     }
 
@@ -153,7 +152,7 @@ class AmigosTest {
         String testName = "Amigo de Teste Telefone " + System.currentTimeMillis();
         int testPhone = -12345; // Número de telefone negativo
 
-        boolean result = amigos.InsertAmigosBD(testName, testPhone);
+        boolean result = amigos.insertAmigosBD(testName, testPhone);
         assertFalse(result, "A inserção de amigo com número de telefone negativo deveria falhar.");
     }
 
@@ -162,10 +161,10 @@ class AmigosTest {
         // Insere um novo amigo especificamente para este teste de exclusão
         String nameToDelete = "Amigo para Excluir " + System.currentTimeMillis();
         int phoneToDelete = 999888777;
-        amigos.InsertAmigosBD(nameToDelete, phoneToDelete);
+        amigos.insertAmigosBD(nameToDelete, phoneToDelete);
         int idToDelete = amigos.maiorIDAmigos(); 
 
-        boolean result = amigos.DeleteAmigosBD(idToDelete);
+        boolean result = amigos.deleteAmigosBD(idToDelete);
         assertTrue(result);
 
         Amigos deletedAmigo = amigos.carregaAmigos(idToDelete);
@@ -175,7 +174,7 @@ class AmigosTest {
     @Test
     void testDeleteAmigosBD_NonExistentID() {
         int nonExistentId = -1; // Um ID que não deve existir
-        boolean result = amigos.DeleteAmigosBD(nonExistentId);
+        boolean result = amigos.deleteAmigosBD(nonExistentId);
         assertTrue(result, "Excluir um amigo inexistente ainda deve retornar true se nenhum erro for lançado pelo DAO.");
         // A implementação atual do DAO não verifica explicitamente a existência antes de tentar excluir,
         // então provavelmente retornará true mesmo que nada tenha sido excluído. Esta é uma área para melhoria.
@@ -185,7 +184,7 @@ class AmigosTest {
     void testUpdateAmigosBD() throws SQLException {
         String updatedName = "Amigo Atualizado " + System.currentTimeMillis();
         int updatedPhone = 321321321;
-        boolean result = amigos.UpdateAmigosBD(testAmigoId, updatedName, updatedPhone);
+        boolean result = amigos.updateAmigosBD(testAmigoId, updatedName, updatedPhone);
         assertTrue(result);
         
         Amigos updatedAmigo = amigos.carregaAmigos(testAmigoId);
@@ -199,7 +198,7 @@ class AmigosTest {
         String updatedName = ""; // Nome vazio
         int updatedPhone = 321321321;
 
-        boolean result = amigos.UpdateAmigosBD(testAmigoId, updatedName, updatedPhone);
+        boolean result = amigos.updateAmigosBD(testAmigoId, updatedName, updatedPhone);
         assertFalse(result, "A atualização de amigo com nome vazio deveria falhar.");
     }
 
@@ -208,7 +207,7 @@ class AmigosTest {
         String updatedName = null; // Nome nulo
         int updatedPhone = 321321321;
 
-        boolean result = amigos.UpdateAmigosBD(testAmigoId, updatedName, updatedPhone);
+        boolean result = amigos.updateAmigosBD(testAmigoId, updatedName, updatedPhone);
         assertFalse(result, "A atualização de amigo com nome nulo deveria falhar.");
     }
 
@@ -217,7 +216,7 @@ class AmigosTest {
         String updatedName = "Amigo Atualizado Telefone Zero";
         int updatedPhone = 0;
 
-        boolean result = amigos.UpdateAmigosBD(testAmigoId, updatedName, updatedPhone);
+        boolean result = amigos.updateAmigosBD(testAmigoId, updatedName, updatedPhone);
         assertFalse(result, "A atualização de amigo com telefone zero deveria falhar.");
     }
 
@@ -226,7 +225,7 @@ class AmigosTest {
         String updatedName = "Amigo Atualizado Telefone " + System.currentTimeMillis();
         int updatedPhone = -98765; // Número de telefone negativo
 
-        boolean result = amigos.UpdateAmigosBD(testAmigoId, updatedName, updatedPhone);
+        boolean result = amigos.updateAmigosBD(testAmigoId, updatedName, updatedPhone);
         assertFalse(result, "A atualização de amigo com número de telefone negativo deveria falhar.");
     }
 
@@ -235,7 +234,7 @@ class AmigosTest {
         int nonExistentId = -1;
         String updatedName = "Atualização Inexistente";
         int updatedPhone = 123123123;
-        boolean result = amigos.UpdateAmigosBD(nonExistentId, updatedName, updatedPhone);
+        boolean result = amigos.updateAmigosBD(nonExistentId, updatedName, updatedPhone);
         assertTrue(result, "Atualizar um amigo inexistente ainda deve retornar true se nenhum erro for lançado pelo DAO.");
         // Semelhante à exclusão, o DAO atual pode retornar true sem atualização real.
     }

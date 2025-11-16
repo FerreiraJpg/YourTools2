@@ -11,13 +11,13 @@ public class Amigos extends Pessoa {
 
     // Método Construtor de Objeto Vazio
     public Amigos() {
-        this.dao = new YourToolsDAO(); // inicializado não importa em qual construtor
+        this.dao = new YourToolsDAO(); 
     }
 
     // Método Construtor usando também o construtor da SUPERCLASSE
     public Amigos(int id, String nome, int telefone) {
         super(id, nome, telefone);
-        this.dao = new YourToolsDAO(); // inicializado não importa em qual construtor
+        this.dao = new YourToolsDAO(); 
     }
 
     // Override necessário para poder retornar os dados de Pessoa no toString para aluno.
@@ -31,12 +31,12 @@ public class Amigos extends Pessoa {
 
 
     // Retorna a Lista de Alunos(objetos)
-    public ArrayList getMinhaListaAmigos() {
+    public ArrayList<Amigos> getMinhaListaAmigos() {
         return dao.getMinhaListaAmigos();
     }
 
     // Cadastra novo aluno
-    public boolean InsertAmigosBD(String nome, int telefone) throws SQLException {
+    public boolean insertAmigosBD(String nome, int telefone) throws SQLException {
         if (nome == null || nome.trim().isEmpty() || telefone <= 0) {
             return false;
         }
@@ -48,15 +48,13 @@ public class Amigos extends Pessoa {
     }
 
     // Deleta um aluno específico pelo seu campo ID
-    public boolean DeleteAmigosBD(int id) {
-//        int indice = this.procuraIndice(id);
-//        AlunoDAO.MinhaLista.remove(indice);
+    public boolean deleteAmigosBD(int id) {
         dao.deleteAmigosBD(id);
         return true;
     }
 
     // Edita um aluno específico pelo seu campo ID
-    public boolean UpdateAmigosBD(int id, String nome, int telefone) {
+    public boolean updateAmigosBD(int id, String nome, int telefone) {
         if (nome == null || nome.trim().isEmpty() || telefone <= 0) {
             return false;
         }

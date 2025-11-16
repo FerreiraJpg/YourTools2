@@ -178,7 +178,7 @@ public class GerenciaAmigos extends javax.swing.JFrame {
             }
 
             // envia os dados para o Aluno processar
-            if (this.objAmigo.UpdateAmigosBD(id, nome, telefone)) {
+            if (this.objAmigo.updateAmigosBD(id, nome, telefone)) {
 
                 // limpa os campos
                 this.c_nome.setText("");
@@ -212,7 +212,7 @@ public class GerenciaAmigos extends javax.swing.JFrame {
             if (resposta_usuario == 0) {// clicou em SIM
 
                 // envia os dados para o Aluno processar
-                if (this.objAmigo.DeleteAmigosBD(id)) {
+                if (this.objAmigo.deleteAmigosBD(id)) {
 
                     // limpa os campos
                     this.c_nome.setText("");
