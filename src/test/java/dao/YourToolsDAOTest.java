@@ -2,12 +2,15 @@ package dao;
 
 import model.Amigos;
 import model.Ferramentas;
-import org.junit.jupiter.api.*;
-import dao.YourToolsDAO;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import org.junit.jupiter.api.AfterAll;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class YourToolsDAOTest {
