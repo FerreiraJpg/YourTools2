@@ -1,7 +1,7 @@
 package dao;
 
-import Model.Amigos;
-import Model.Ferramentas;
+import model.Amigos;
+import model.Ferramentas;
 import org.junit.jupiter.api.*;
 import dao.YourToolsDAO;
 import java.sql.SQLException;

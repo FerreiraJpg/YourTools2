@@ -4,7 +4,7 @@
  */
 package View;
 
-import Model.Amigos;
+import model.Amigos;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

@@ -1,7 +1,7 @@
 package Integration;
 
 import dao.YourToolsDAO;
-import Model.Ferramentas;
+import model.Ferramentas;
 import java.sql.SQLException;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
