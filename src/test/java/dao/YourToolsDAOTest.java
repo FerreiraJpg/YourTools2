@@ -1,5 +1,7 @@
 package dao;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import model.Amigos;
 import model.Ferramentas;
 import java.util.ArrayList;
@@ -151,6 +153,28 @@ public class YourToolsDAOTest {
 
         assertNotNull(lista, "A lista de ferramentas não deve ser nula.");
         assertTrue(lista.isEmpty(), "A lista de ferramentas deve estar vazia após a limpeza.");
+    }
+    
+    @Test
+    void testGetConexaoClassNotFound() {
+        YourToolsDAO conn = new YourToolsDAO() {
+            @Override
+            public Connection getConexao() {
+                try {
+                    Class.forName("classe.inexistente");
+                    return null;
+                } catch (ClassNotFoundException e) {
+                    throw new IllegalStateException("Driver SQLite não encontrado! Verifique o pom.xml.", e);
+                }
+            }
+
+            @Override
+            public void criarTabelas() {
+            }
+        };
+
+        Exception exception = assertThrows(IllegalStateException.class, conn::getConexao);
+        assertTrue(exception.getMessage().contains("Driver SQLite não encontrado"));
     }
 
 }

@@ -15,8 +15,8 @@ import java.util.logging.Logger;
 
 public class YourToolsDAO {
 
-    public static ArrayList<Amigos> MinhaLista = new ArrayList<>();
-    public static ArrayList<Ferramentas> MinhaListaFerramentas = new ArrayList<>();
+    public static final ArrayList<Amigos> MinhaLista = new ArrayList<>();
+    public static final ArrayList<Ferramentas> MinhaListaFerramentas = new ArrayList<>();
     Logger logger = Logger.getLogger(getClass().getName());
 
 
