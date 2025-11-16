@@ -1,7 +1,7 @@
 package dao;
 
-import Model.Amigos;
-import Model.Ferramentas;
+import model.Amigos;
+import model.Ferramentas;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
