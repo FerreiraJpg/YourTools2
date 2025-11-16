@@ -10,6 +10,14 @@
     <name>PrototipoMaven</name>
 
     <properties>
+        <sonar.coverage.exclusions>
+            **/view/**,
+            **/principal/**
+        </sonar.coverage.exclusions>
+        <sonar.exclusions>
+            **/view/**/*.java,
+            **/principal/Principal.java
+        </sonar.exclusions>
         <sonar.organization>ferreirajpg</sonar.organization>
         <sonar.projectKey>FerreiraJpg_YourTools2</sonar.projectKey>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
