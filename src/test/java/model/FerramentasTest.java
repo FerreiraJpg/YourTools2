@@ -7,8 +7,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import dao.YourToolsDAO;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +22,7 @@ class FerramentasTest {
     private YourToolsDAO daoMock;
 
     @BeforeEach
-    void setUp() throws SQLException {
+    void setUp()  {
         MockitoAnnotations.openMocks(this);
 
         ferramentas = new Ferramentas();
