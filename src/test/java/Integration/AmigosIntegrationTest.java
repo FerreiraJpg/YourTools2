@@ -47,15 +47,17 @@ public class AmigosIntegrationTest {
     @Test
     @Order(2)
     void testInsertAmigoIncorreto() {
-    try {
-        boolean inserido = dao.insertAmigosBD(amigoInvalido);
-        assertFalse(inserido, "O método não deveria retornar true em uma inserção inválida");
-    } catch (RuntimeException e) {
-        assertTrue(true, "Erro lançado corretamente para inserção inválida");
-    } catch (Exception e) {
-        fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
+        try {
+            boolean inserido = dao.insertAmigosBD(amigoInvalido);
+            assertFalse(inserido, "O método não deveria retornar true em uma inserção inválida");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true, "Erro lançado corretamente para inserção inválida");
+        } catch (RuntimeException e) {
+            assertTrue(true, "Erro lançado corretamente para inserção inválida");
+        } catch (Exception e) {
+            fail("Deveria lançar RuntimeException, mas lançou outro tipo de erro: " + e.getClass().getSimpleName());
+        }
     }
-}
     
     @Test
     @Order(3)
