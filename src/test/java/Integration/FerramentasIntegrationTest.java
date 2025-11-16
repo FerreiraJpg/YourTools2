@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class FerramentasIntegrationTest {
+class FerramentasIntegrationTest {
     
     static YourToolsDAO dao;
     Ferramentas ferramentaValida;
