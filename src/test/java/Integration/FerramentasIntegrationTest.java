@@ -1,6 +1,6 @@
 package Integration;
 
-import DAO.YourToolsDAO;
+import dao.YourToolsDAO;
 import Model.Ferramentas;
 import java.sql.SQLException;
 import java.util.List;

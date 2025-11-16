@@ -1,7 +1,7 @@
 package Model;
 
 import java.util.*;
-import DAO.YourToolsDAO;
+import dao.YourToolsDAO;
 import java.sql.SQLException;
 
 public class Ferramentas {
