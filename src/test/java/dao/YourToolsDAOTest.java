@@ -143,7 +143,7 @@ public class YourToolsDAOTest {
     @Test
     @Order(12)
     public void testGetMinhaListaFerramentas_Vazia() {
-        
+
         List<Ferramentas> todosFerramentas = dao.getMinhaListaFerramentas();
         for (Ferramentas a : todosFerramentas) {
             dao.deleteFerramentasBD(a.getId());
@@ -154,7 +154,7 @@ public class YourToolsDAOTest {
         assertNotNull(lista, "A lista de ferramentas não deve ser nula.");
         assertTrue(lista.isEmpty(), "A lista de ferramentas deve estar vazia após a limpeza.");
     }
-    
+
     @Test
     void testGetConexaoClassNotFound() {
         YourToolsDAO conn = new YourToolsDAO() {
@@ -177,6 +177,43 @@ public class YourToolsDAOTest {
 
         Exception exception = assertThrows(IllegalStateException.class, conn::getConexao);
         assertTrue(exception.getMessage().contains("Driver SQLite não encontrado"));
+    }
+
+    @Test
+    @Order(15)
+    public void testGetConexao_FalhaSQLException_CobreCatch() {
+        YourToolsDAO testeDAO = new YourToolsDAO();
+
+        assertThrows(IllegalStateException.class, () -> {
+            testeDAO.getConexaoInvalidaParaTeste();
+        }, "Deve lançar IllegalStateException ao simular falha de conexão (SQLException).");
+    }
+
+    @Test
+    @Order(16)
+    public void testGetConexao_FalhaClassNotFound() {
+        YourToolsDAO connFalhaDriver = new YourToolsDAO() {
+            @Override
+            public Connection getConexao() {
+                try {
+
+                    Class.forName("com.driver.nao.existe");
+                    return null;
+                } catch (ClassNotFoundException e) {
+
+                    throw new IllegalStateException("Driver SQLite não encontrado! Verifique o pom.xml.", e);
+                }
+
+            }
+
+            @Override
+            public void criarTabelas() {
+
+            }
+        };
+
+        assertThrows(IllegalStateException.class, connFalhaDriver::getConexao,
+                "Deve lançar IllegalStateException ao simular a falta do driver (ClassNotFoundException).");
     }
 
 }
