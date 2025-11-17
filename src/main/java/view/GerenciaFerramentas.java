@@ -206,10 +206,10 @@ public class GerenciaFerramentas extends javax.swing.JFrame {
             String marca = "";
             double custoAquisicao = 0;
 
-            if (this.c_nome.getText().length() < 2) {
-                throw new Mensagens("Nome deve conter ao menos 2 caracteres.");
+            if (this.c_marca.getText().length() < 2) {
+                throw new Mensagens("Marca deve conter ao menos 2 caracteres.");
             } else {
-                nome = this.c_nome.getText();
+                marca = this.c_marca.getText();
             }
 
             if (this.c_marca.getText().length() < 2) {
