@@ -33,7 +33,7 @@ class FerramentasIntegrationTest {
     }
 
     @BeforeEach
-    void setupDados() throws SQLException {
+    void setupDados() {
         ferramentaValida = new Ferramentas(dao.maiorIDFerramentas() + 1, "Produto Teste Integracao", "Marca Teste Integracao", 27);
         ferramentaNomeInvalido = new Ferramentas(dao.maiorIDFerramentas() + 1, null, "Marca Teste Integracao", 42);
         ferramentaMarcaInvalida = new Ferramentas(dao.maiorIDFerramentas() + 1, "Nome Teste Integracao", null, 42);
@@ -53,8 +53,6 @@ class FerramentasIntegrationTest {
         try {
             boolean inserido = dao.insertFerramentasBD(ferramentaNomeInvalido);
             assertFalse(inserido, "O método não deveria retornar true em uma inserção inválida");
-        } catch (IllegalArgumentException e) {
-            assertTrue(true, "Erro lançado corretamente para inserção inválida");
         } catch (RuntimeException e) {
             assertTrue(true, "Erro lançado corretamente para inserção inválida");
         } catch (Exception e) {
@@ -90,7 +88,7 @@ class FerramentasIntegrationTest {
     
     @Test
     @Order(5)
-    void testExcluirferramentaNomeInvalido() throws SQLException {
+    void testExcluirferramentaNomeInvalido() {
         int idInvalido = dao.maiorIDFerramentas() + 1;
 
         try
@@ -163,9 +161,8 @@ class FerramentasIntegrationTest {
         
         ferramentaValida.setNome(null);
         
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            dao.updateFerramentasBD(ferramentaValida);
-        });
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> dao.updateFerramentasBD(ferramentaValida));
+        assertEquals("Preço não pode ser nulo/vazio", exception.getMessage());
 
         dao.deleteFerramentasBD(ferramentaValida.getId());
     }
@@ -177,9 +174,9 @@ class FerramentasIntegrationTest {
         
         ferramentaValida.setMarca(null);
         
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            dao.updateFerramentasBD(ferramentaValida);
-        });
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> dao.updateFerramentasBD(ferramentaValida));
+        assertEquals("Preço não pode ser nulo/vazio", exception.getMessage());
+
 
         dao.deleteFerramentasBD(ferramentaValida.getId());
     }
@@ -190,10 +187,9 @@ class FerramentasIntegrationTest {
         dao.insertFerramentasBD(ferramentaValida);
         
         ferramentaValida.setCustoAquisicao(0);
-        
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            dao.updateFerramentasBD(ferramentaValida);
-        });
+              
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> dao.updateFerramentasBD(ferramentaValida));
+        assertEquals("Preço não pode ser nulo/vazio", exception.getMessage());
 
         dao.deleteFerramentasBD(ferramentaValida.getId());
     }
