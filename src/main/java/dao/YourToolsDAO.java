@@ -13,17 +13,47 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Classe responsável pelo acesso e manipulação de dados no banco SQLite.
+ * Implementa operações CRUD para as entidades
+ * Amigos e Ferramentas.
+ * 
+ * @author YourTools Team
+ * @version 1.0
+ * @since 2025
+ */
 public class YourToolsDAO {
 
+    /**
+     * Lista estática que armazena objetos do tipo Amigos.
+     */
     protected static final ArrayList<Amigos> MinhaLista = new ArrayList<>();
+    
+    /**
+     * Lista estática que armazena objetos do tipo Ferramentas.
+     */
     protected static final ArrayList<Ferramentas> MinhaListaFerramentas = new ArrayList<>();
+    
+    /**
+     * Logger para registro de eventos e erros da classe.
+     */
     Logger logger = Logger.getLogger(getClass().getName());
 
-
+    /**
+     * Construtor padrão que inicializa o DAO e cria as tabelas necessárias.
+     * Chama o método criarTabelas() automaticamente.
+     */
     public YourToolsDAO() {
         criarTabelas();
     }
 
+    /**
+     * Estabelece e retorna uma conexão com o banco de dados SQLite.
+     * Configura propriedades de conexão como busy_timeout.
+     * 
+     * @return Connection objeto de conexão com o banco de dados
+     * @throws IllegalStateException se o driver SQLite não for encontrado ou houver erro na conexão
+     */
     public Connection getConexao() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -43,6 +73,11 @@ public class YourToolsDAO {
         }
     }
 
+    /**
+     * Cria as tabelas tb_amigos e tb_ferramentas no banco de dados caso não existam.
+     * Utiliza a cláusula IF NOT EXISTS para evitar erros.
+     * Registra informações de sucesso ou erro através do logger.
+     */
     public void criarTabelas() {
         String sqlAmigos =
                 "CREATE TABLE IF NOT EXISTS tb_amigos (" +
@@ -68,14 +103,18 @@ public class YourToolsDAO {
 
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Erro ao criar tabelas no SQLite", e);
-
         }
     }
 
     // ------------------------------------------------------------
-    //  AMIGOS
+    //  MÉTODOS PARA AMIGOS
     // ------------------------------------------------------------
 
+    /**
+     * Retorna o maior ID presente na tabela tb_amigos.
+     * 
+     * @return int o maior ID encontrado, ou 0 se a tabela estiver vazia ou houver erro
+     */
     public int maiorIDAmigos() {
         String sql = "SELECT MAX(id) AS id FROM tb_amigos";
 
@@ -90,6 +129,12 @@ public class YourToolsDAO {
         }
     }
 
+    /**
+     * Busca e retorna todos os amigos cadastrados no banco de dados.
+     * Limpa a lista atual antes de popular com novos dados.
+     * 
+     * @return ArrayList&lt;Amigos&gt; lista contendo todos os amigos cadastrados
+     */
     public ArrayList<Amigos> getMinhaListaAmigos() {
         MinhaLista.clear();
         String sql = "SELECT id, nome, telefone FROM tb_amigos";
@@ -114,6 +159,13 @@ public class YourToolsDAO {
         return MinhaLista;
     }
 
+    /**
+     * Insere um novo amigo no banco de dados.
+     * 
+     * @param objeto Amigos objeto contendo os dados do amigo a ser inserido
+     * @return boolean true se a inserção foi bem-sucedida
+     * @throws IllegalArgumentException se houver erro durante a inserção
+     */
     public boolean insertAmigosBD(Amigos objeto) {
         String sql = "INSERT INTO tb_amigos(id,nome,telefone) VALUES(?,?,?)";
 
@@ -131,6 +183,13 @@ public class YourToolsDAO {
         }
     }
             
+    /**
+     * Remove um amigo do banco de dados com base no ID fornecido.
+     * 
+     * @param id int identificador único do amigo a ser removido
+     * @return boolean true se pelo menos uma linha foi afetada (amigo deletado com sucesso)
+     * @throws IllegalArgumentException se houver erro durante a exclusão
+     */
     public boolean deleteAmigosBD(int id) {
         String sql = "DELETE FROM tb_amigos WHERE id = ?";
 
@@ -147,6 +206,13 @@ public class YourToolsDAO {
         }
     }
 
+    /**
+     * Atualiza os dados de um amigo existente no banco de dados.
+     * 
+     * @param objeto Amigos objeto contendo os novos dados do amigo
+     * @return boolean true se a atualização foi bem-sucedida
+     * @throws IllegalArgumentException se houver erro durante a atualização
+     */
     public boolean updateAmigosBD(Amigos objeto) {
         String sql = "UPDATE tb_amigos SET nome = ?, telefone = ? WHERE id = ?";
 
@@ -164,6 +230,13 @@ public class YourToolsDAO {
         }
     }
 
+    /**
+     * Carrega os dados de um amigo específico com base no ID fornecido.
+     * 
+     * @param id int identificador único do amigo a ser carregado
+     * @return Amigos objeto contendo os dados do amigo, ou null se não encontrado
+     * @throws IllegalArgumentException se houver erro durante a consulta
+     */
     public Amigos carregaAmigos(int id) {
         String sql = "SELECT nome, telefone FROM tb_amigos WHERE id = ?";
 
@@ -189,9 +262,14 @@ public class YourToolsDAO {
     }
 
     // ------------------------------------------------------------
-    //  FERRAMENTAS
+    //  MÉTODOS PARA FERRAMENTAS
     // ------------------------------------------------------------
 
+    /**
+     * Retorna o maior ID presente na tabela tb_ferramentas.
+     * 
+     * @return int o maior ID encontrado, ou 0 se a tabela estiver vazia ou houver erro
+     */
     public int maiorIDFerramentas() {
         String sql = "SELECT MAX(id) AS id FROM tb_ferramentas";
 
@@ -206,6 +284,12 @@ public class YourToolsDAO {
         }
     }
 
+    /**
+     * Busca e retorna todas as ferramentas cadastradas no banco de dados.
+     * Limpa a lista atual antes de popular com novos dados.
+     * 
+     * @return ArrayList&lt;Ferramentas&gt; lista contendo todas as ferramentas cadastradas
+     */
     public ArrayList<Ferramentas> getMinhaListaFerramentas() {
         MinhaListaFerramentas.clear();
         String sql = "SELECT id, nome, marca, custoAquisicao FROM tb_ferramentas";
@@ -230,6 +314,14 @@ public class YourToolsDAO {
         return MinhaListaFerramentas;
     }
 
+    /**
+     * Insere uma nova ferramenta no banco de dados.
+     * Valida os dados antes da inserção (nome, marca e custo não podem ser vazios/nulos/zero).
+     * 
+     * @param obj Ferramentas objeto contendo os dados da ferramenta a ser inserida
+     * @return boolean true se a inserção foi bem-sucedida
+     * @throws IllegalArgumentException se os dados forem inválidos ou houver erro na inserção
+     */
     public boolean insertFerramentasBD(Ferramentas obj) {
         String sql = "INSERT INTO tb_ferramentas(id,nome,marca,custoAquisicao) VALUES(?,?,?,?)";
 
@@ -260,6 +352,13 @@ public class YourToolsDAO {
         }
     }
 
+    /**
+     * Remove uma ferramenta do banco de dados com base no ID fornecido.
+     * 
+     * @param id int identificador único da ferramenta a ser removida
+     * @return boolean true se pelo menos uma linha foi afetada (ferramenta deletada com sucesso)
+     * @throws IllegalStateException se houver erro durante a exclusão
+     */
     public boolean deleteFerramentasBD(int id) {
         String sql = "DELETE FROM tb_ferramentas WHERE id = ?";
 
@@ -276,6 +375,15 @@ public class YourToolsDAO {
         }
     }
 
+    /**
+     * Atualiza os dados de uma ferramenta existente no banco de dados.
+     * Valida os dados antes da atualização (nome, marca e custo não podem ser vazios/nulos/zero).
+     * 
+     * @param obj Ferramentas objeto contendo os novos dados da ferramenta
+     * @return boolean true se a atualização foi bem-sucedida
+     * @throws IllegalArgumentException se os dados forem inválidos
+     * @throws IllegalStateException se houver erro durante a atualização
+     */
     public boolean updateFerramentasBD(Ferramentas obj) {
         String sql = "UPDATE tb_ferramentas SET nome = ?, marca = ?, custoAquisicao = ? WHERE id = ?";
         
@@ -306,6 +414,13 @@ public class YourToolsDAO {
         }
     }
 
+    /**
+     * Carrega os dados de uma ferramenta específica com base no ID fornecido.
+     * 
+     * @param id int identificador único da ferramenta a ser carregada
+     * @return Ferramentas objeto contendo os dados da ferramenta, ou null se não encontrada
+     * @throws IllegalStateException se houver erro durante a consulta
+     */
     public Ferramentas carregaFerramentas(int id) {
         String sql = "SELECT nome, marca, custoAquisicao FROM tb_ferramentas WHERE id = ?";
 
