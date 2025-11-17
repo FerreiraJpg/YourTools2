@@ -162,7 +162,7 @@ class FerramentasIntegrationTest {
         ferramentaValida.setNome(null);
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> dao.updateFerramentasBD(ferramentaValida));
-        assertEquals("Preço não pode ser nulo/vazio", exception.getMessage());
+        assertEquals("Nome não pode ser nulo/vazio", exception.getMessage());
 
         dao.deleteFerramentasBD(ferramentaValida.getId());
     }
@@ -175,7 +175,7 @@ class FerramentasIntegrationTest {
         ferramentaValida.setMarca(null);
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> dao.updateFerramentasBD(ferramentaValida));
-        assertEquals("Preço não pode ser nulo/vazio", exception.getMessage());
+        assertEquals("Marca não pode ser nulo/vazio", exception.getMessage());
 
 
         dao.deleteFerramentasBD(ferramentaValida.getId());
