@@ -2,7 +2,6 @@ package Integration;
 
 import dao.YourToolsDAO;
 import model.Ferramentas;
-import java.sql.SQLException;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
