@@ -10,16 +10,10 @@
 
 [![Integração continua de Java com Maven](https://github.com/FerreiraJpg/YourTools2/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/FerreiraJpg/YourTools2/actions/workflows/maven.yml)
 
-Trabalho do primeiro semestre da faculdade.
-### 🧩 Grupo do Projeto Original
+---
+### Objetivo do Projeto
 
-| Integrante | RA | GitHub |
-|-------------|------|--------|
-| Edric Leoni Savio | 1072310470 | [@edricls](https://github.com/edricls) |
-| Pedro Schreiner Ferreira | 1072310948 | [@FerreiraJpg](https://github.com/FerreiraJpg) |
-| Iago Alexandre Marcaccini Panho | 1072312987 | [@Iag18](https://github.com/Iag18) |
-| Kauan Correia | 1072314544 | — |
-| João Bernardo Varela de Amorim | 10723114376 | — |
+Este projeto teve como objetivo o melhoramento da qualidade do sistema legado YourTools2, utilizando práticas de desenvolvimento de software, especialmente no que diz respeito à implementação de testes automatizados, refatorações estruturais e ajustes de arquitetura. O foco principal foi garantir maior confiabilidade, manutenibilidade e robustez ao código, corrigindo falhas existentes e prevenindo regressões futuras.
 
 ---
 
@@ -34,7 +28,29 @@ Trabalho do primeiro semestre da faculdade.
 | Clara Emidio Corrêa | 10722129245 | [@ClaraCorrea](https://github.com/ClaraCorrea) |
 
 ---
-REQUISITOS FUNCIONAIS
+
+Trabalho do primeiro semestre da faculdade.
+### 🧩 Grupo do Projeto Original
+
+| Integrante | RA | GitHub |
+|-------------|------|--------|
+| Edric Leoni Savio | 1072310470 | [@edricls](https://github.com/edricls) |
+| Pedro Schreiner Ferreira | 1072310948 | [@FerreiraJpg](https://github.com/FerreiraJpg) |
+| Iago Alexandre Marcaccini Panho | 1072312987 | [@Iag18](https://github.com/Iag18) |
+| Kauan Correia | 1072314544 | — |
+| João Bernardo Varela de Amorim | 10723114376 | — |
+
+###  Tecnologias Utilizadas no Projeto 
+- Java 17
+- Maven
+- Banco de dados SQL Lite
+- Jacoco
+- SonarCloud
+- Junit
+- Mockito
+
+---
+### Requisitos Funcionais
 
 Gestão de Amigos
 |RF01 - Cadastrar amigos com nome e telefone.
@@ -59,7 +75,7 @@ Validações
 
 ---
 
-REQUISITO NÃO FUNCIONAIS
+### Requisitos Não Funcionais
 
 Tecnologia
 |RNF01 - O sistema deve ser desenvolvido em Java 21
@@ -92,6 +108,7 @@ Portabilidade
 |RNF18 - O sistema deve funcionar em Windows, Linux e macOS
 |RNF19 - O sistema deve criar tabelas automaticamente se não existirem
 |RNF20 - O sistema deve gerar um JAR executável
+
 
 
 
